@@ -1,4 +1,3 @@
-let total = 0;
 const cartTotal = document.getElementById("total");
 const shoppingCartItemsContainer = document.getElementById("table");
 
@@ -19,16 +18,22 @@ function addToCartClicked(event) {
 }
 
 function addItemToShoppingCart(itemTitle, itemPrice, itemImage) {
-  const elementsTitle = shoppingCartItemsContainer.getElementsByClassName("itemTitle");
+  const elementsTitle =
+    shoppingCartItemsContainer.getElementsByClassName("itemTitle");
+
   for (let i = 0; i < elementsTitle.length; i++) {
     if (elementsTitle[i].innerText === itemTitle) {
-      const elementQuantity = elementsTitle[i].parentElement.parentElement.querySelector("#quantity")
-      const elementPrice = elementsTitle[i].parentElement.parentElement.querySelector("#cart-price")
+      const elementQuantity =
+        elementsTitle[i].parentElement.parentElement.querySelector("#quantity");
+      const elementPrice =
+        elementsTitle[i].parentElement.parentElement.querySelector(
+          "#cart-price"
+        );
       const price = Number(elementPrice.textContent.replace("$", ""));
       elementQuantity.value++;
       let a = cartTotal.textContent;
       let res = Number(a.replace("$", ""));
-      res = res + price
+      res = res + price;
       cartTotal.innerHTML = `$${res}`;
       return;
     }
@@ -53,54 +58,80 @@ function addItemToShoppingCart(itemTitle, itemPrice, itemImage) {
   <a class="btn btn-danger btn-delete"><i class="bi-trash"></i></a</a>
   </td>`;
 
-  newTransactionRow.querySelector(".btn-delete").addEventListener('click', () => {
-    const deletePriceElement = newTransactionRow.querySelector("#cart-price").textContent
-    const deletePrice = Number(deletePriceElement.replace("$", ""));
-    deleteItems(deletePrice)
+  // adding the price of the first element to the shopping cart
+  const priceElement = document.getElementById("cart-price");
+  const price = Number(priceElement.textContent.replace("$", ""));
+
+  let totalCart = cartTotal.textContent;
+  let res = Number(totalCart.replace("$", ""));
+  res = res + price;
+  cartTotal.innerHTML = `$${res}`;
+
+  newTransactionRow.querySelector(".btn-delete").addEventListener("click", () => {
+      const quantityElement = newTransactionRow.querySelector("#quantity");
+      const quantity = Number(quantityElement.value);
+
+      const deletePriceElement =
+        newTransactionRow.querySelector("#cart-price").textContent;
+      const deletePrice = Number(deletePriceElement.replace("$", ""));
+      const totalDeletePrice = deletePrice * quantity;
+
+      deleteItems(totalDeletePrice);
+
+      padre = newTransactionRow.parentNode;
+      padre.removeChild(newTransactionRow);
+    });
+
+  newTransactionRow.querySelector(".shoppingCartItemQuantity").addEventListener("click", (event) => {
+      const quantityInput = event.target;
+      if (quantityInput.value <= 0) {
+        quantityInput.value = 1;
+      }
+
+      let sumaTotal = 0;
+
+      for (i = 0; i < elementsTitle.length; i++) {
+        const elementPrice =
+          elementsTitle[i].parentElement.parentElement.querySelector(
+            "#cart-price"
+          );
+        const price = Number(elementPrice.textContent.replace("$", ""));
+
+        const elementQuantity =
+          elementsTitle[i].parentElement.parentElement.querySelector(
+            "#quantity"
+          ).value;
+
+        quantityPrice = price * elementQuantity;
+
+        sumaTotal = sumaTotal + quantityPrice;
+
+        cartTotal.innerHTML = `$${sumaTotal}`;
+      }
+    });
+
+  // empty cart button
+  document.getElementById("totalTrash").addEventListener("click", (event) => {
+    let total = 0;
 
     padre = newTransactionRow.parentNode;
-		padre.removeChild(newTransactionRow);
+    padre.removeChild(newTransactionRow);
+    
+    cartTotal.innerHTML = `$${total}`;
   });
-
-  newTransactionRow.querySelector(".shoppingCartItemQuantity").addEventListener('click', updateQuantity);
-  updateTotal();
 }
 
-function updateTotal() {
-  const priceElement = document.getElementById("cart-price");
-  const price = Number(priceElement.textContent.replace("$", ""));
-
-  // const quantityElement = document.getElementById("quantity");
-  // const quantity = Number(quantityElement.value);
-
-  total = total + price
+function deleteItems(totalDeletePrice) {
+  const totalContent = cartTotal.textContent;
+  const totalNumber = Number(totalContent.replace("$", ""));
+  total = totalNumber - totalDeletePrice;
 
   cartTotal.innerHTML = `$${total}`;
 }
 
-function updateQuantity(event) {
-  const quantityInput = event.target
-  if (quantityInput.value <= 0) {
-    quantityInput.value = 1
-  }
-
-  const priceElement = document.getElementById("cart-price");
-  const price = Number(priceElement.textContent.replace("$", ""));
-
-  const quantityElement = document.getElementById("quantity");
-  const quantity = Number(quantityElement.value);
-
-  let res = price * quantity;
-
-  cartTotal.innerHTML = `$${res}`;
-}
-
-function deleteItems(deletePrice) {
-  const a = cartTotal.textContent;
-  const b = Number(a.replace("$", ""));
-  total = b - deletePrice 
+// empty cart button
+document.getElementById("totalTrash").addEventListener("click", (event) => {
+  let total = 0;
 
   cartTotal.innerHTML = `$${total}`;
-}
-
-
+});
