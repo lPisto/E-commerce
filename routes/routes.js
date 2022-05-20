@@ -22,6 +22,10 @@ router.get("/signUp", (req, res) => {
   res.render("signUp");
 });
 
+router.post("/signUp", (req, res) => {
+  console.log(req.body)
+});
+
 // router.post('/signUp.html', (req, res) => {
 //   const {name, surname, email, password, confirm_password, contact} = req.body;
 //   let regexEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/
