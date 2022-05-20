@@ -1,41 +1,45 @@
 const express = require("express");
 const router = express.Router();
-const path = require("path");
+const { registerCtrl } = require('../controllers/registerCtrl')
 
 router.get("/", (req, res) => {
   res.render("index");
 });
 
-router.get("/index.html", (req, res) => {
+router.get("/index", (req, res) => {
   res.render("index");
 });
 
-router.get("/products.html", (req, res) => {
+router.get("/products", (req, res) => {
   res.render("products");
 });
 
-router.get("/login.html", (req, res) => {
+router.get("/login", (req, res) => {
   res.render("login");
 });
 
-router.get("/signUp", (req, res) => {
-  res.render("signUp");
+router.post("/login", (req, res) => {
+  console.log(req.body);
 });
 
-router.post("/signUp", (req, res) => {
-  console.log(req.body)
+router.get("/signUp", (req, res) => {
+  res.render('signUp', {
+    wrongPass: ""
+  })
 });
+
+router.post("/signUp", registerCtrl);;
 
 // router.post('/signUp.html', (req, res) => {
 //   const {name, surname, email, password, confirm_password, contact} = req.body;
 //   let regexEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/
-  
+
 //   if(!regexEmail.test(email.value)){
 //     warning.innerHTML = `El email no es valido <br>`
 //   }
 
 //   if (password != confirm_password) {
-//     alert('Password do not match');    
+//     alert('Password do not match');
 //   }
 //   if (password.length < 4) {
 //     errors.push({text: 'Password must be at least 4 characters'})
@@ -47,17 +51,16 @@ router.post("/signUp", (req, res) => {
 //   }
 // });
 
-router.get("/cart.html", (req, res) => {
+router.get("/cart", (req, res) => {
   res.render("cart");
 });
 
-router.get("/success.html", (req, res) => {
+router.get("/success", (req, res) => {
   res.render("success");
 });
 
-router.get("/settings.html", (req, res) => {
+router.get("/settings", (req, res) => {
   res.render("settings");
 });
-
 
 module.exports = router;
