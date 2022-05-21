@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const { registerCtrl } = require('../controllers/registerCtrl')
 
 router.get("/", (req, res) => {
   res.render("index");
@@ -23,33 +22,12 @@ router.post("/login", (req, res) => {
 });
 
 router.get("/signUp", (req, res) => {
-  res.render('signUp', {
-    wrongPass: ""
-  })
+  res.render('signUp')
 });
 
-router.post("/signUp", registerCtrl);;
-
-// router.post('/signUp.html', (req, res) => {
-//   const {name, surname, email, password, confirm_password, contact} = req.body;
-//   let regexEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/
-
-//   if(!regexEmail.test(email.value)){
-//     warning.innerHTML = `El email no es valido <br>`
-//   }
-
-//   if (password != confirm_password) {
-//     alert('Password do not match');
-//   }
-//   if (password.length < 4) {
-//     errors.push({text: 'Password must be at least 4 characters'})
-//   }
-//   if (errors.length > 0) {
-//     res.render('signUp.html', {errors, name, surname, email, password, confirm_password, contact});
-//   } else {
-//     res.send('ok')
-//   }
-// });
+router.post("/signUp", (req, res) => {
+  console.log(req.body);
+});
 
 router.get("/cart", (req, res) => {
   res.render("cart");
