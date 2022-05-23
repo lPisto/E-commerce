@@ -3,6 +3,8 @@ const morgan = require("morgan");
 const path = require("path");
 const mysql = require("mysql");
 const myConnection = require("express-myconnection");
+const session = require("express-session");
+const bodyParser = require("body-parser");
 
 // initialization
 const app = express();
@@ -14,7 +16,8 @@ app.set('view engine', 'ejs');
 
 // middlewares
 app.use(morgan("dev"));
-app.use(express.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
 
 app.use(myConnection(mysql, {
   host: 'localhost',
@@ -24,7 +27,11 @@ app.use(myConnection(mysql, {
   database: 'ecommerce',
 }, 'single'));
 
-// global variables
+app.use(session({
+  secret: 'secret',
+  resave: true,
+  saveUninitialized: true
+}));
 
 // routes
 app.use(require('./routes/routes.js'));

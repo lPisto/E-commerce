@@ -1,5 +1,6 @@
 const form = document.getElementById("form");
 const inputs = document.querySelectorAll("#formInput");
+const submitBtn = document.getElementById("registerSubmitBtn");
 
 const expresiones = {
   name: /^[a-zA-ZÀ-ÿ\s]{1,50}$/, // Letras y espacios, pueden llevar acentos.
@@ -16,6 +17,8 @@ fields = {
     phone: false,
     password: false
 }
+
+submitBtn.disabled = true;
 
 const validateForm = (e) => {
     switch (e.target.name) {
@@ -39,6 +42,11 @@ const validateForm = (e) => {
             confirmPassword();
         break;
     }
+    if (fields.name && fields.surname && fields.email && fields.phone && fields.password == true) {
+        submitBtn.disabled = false;
+      } else {
+        submitBtn.disabled = true;
+      }
 }
 
 const validateField = (expresion, input, field) => {
@@ -94,18 +102,4 @@ const confirmPassword = () => {
 inputs.forEach((input) => {
   input.addEventListener("keyup", validateForm);
   input.addEventListener("blur", validateForm);
-});
-
-form.addEventListener("submit", (e) => {
-  e.preventDefault();
-
-  if (fields.name && fields.surname && fields.email && fields.phone && fields.password) {
-    form.reset();
-
-    document.querySelectorAll('.correctForm i').forEach((icon) => {
-        icon.classList.remove('fa-circle-check')
-    })
-  } else {
-    document.querySelector(`#completeFields .formInputError`).classList.add('formInputErrorActive');
-  }
 });

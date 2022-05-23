@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const loginController = require('../controllers/loginController')
 
 router.get("/", (req, res) => {
   res.render("index");
@@ -25,9 +26,7 @@ router.get("/signUp", (req, res) => {
   res.render('signUp')
 });
 
-router.post("/signUp", (req, res) => {
-  console.log(req.body);
-});
+router.post("/signUp", loginController.storeUser);
 
 router.get("/cart", (req, res) => {
   res.render("cart");
