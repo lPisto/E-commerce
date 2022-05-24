@@ -23,7 +23,10 @@ router.post("/login", (req, res) => {
 });
 
 router.get("/signUp", (req, res) => {
-  res.render('signUp')
+  res.render('signUp', {
+    userExists: "",
+    errorTriangle: ""
+  })
 });
 
 router.post("/signUp", loginController.storeUser);

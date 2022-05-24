@@ -268,4 +268,9 @@ footer{
 #completeFields {
     margin-bottom: 5px
 }
+#userExists {
+    color:#bb2929;
+	font-size: 12px;
+	margin-bottom: 0;
+}
   
