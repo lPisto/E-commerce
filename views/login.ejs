@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://kit.fontawesome.com/d520c148c3.js" crossorigin="anonymous"></script>
     <title>Market</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="/css/style.css" rel="stylesheet">
@@ -43,13 +44,17 @@
                         </div>
                         <div class="panel-body ">
                             <p class="text-warning">Login to make a purchase</p>
-                            <form>
+                            <form class="center" action="/login" method="POST" id="form">
                                 <div class="form-group">
-                                    <input type="text" placeholder="E-mail" class="form-control" name="E-mail">
+                                    <input type="email" class="form-control" placeholder="Email" name="email" id="formInput">
                                 </div>
                                 <div class="form-group">
-                                    <input type="text" placeholder="Password" class="form-control" name="Password">                             
+                                    <input type="password" class="password" placeholder="Password" name="password" id="formInput">
                                 </div>
+                            </div>
+                            <div id="userExists">
+                                <p><i <% %> class='<%= errorTriangle %>'<% %>></i> <b><%= loginError %></b></p>
+                            </div>
                                 <button class="btn btn-primary">Login</button>
                                 <div class="panel-footer">
                                     Don't have an account?<a href="signUp" color:blue;>Register</a>

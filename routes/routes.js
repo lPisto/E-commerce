@@ -14,22 +14,15 @@ router.get("/products", (req, res) => {
   res.render("products");
 });
 
-router.get("/login", (req, res) => {
-  res.render("login");
-});
+router.get("/login", loginController.login);
 
-router.post("/login", (req, res) => {
-  console.log(req.body);
-});
+router.post("/login", loginController.auth);
 
-router.get("/signUp", (req, res) => {
-  res.render('signUp', {
-    userExists: "",
-    errorTriangle: ""
-  })
-});
+router.get("/signUp", loginController.signUp);
 
 router.post("/signUp", loginController.storeUser);
+
+router.get("/logOut", loginController.logOut);
 
 router.get("/cart", (req, res) => {
   res.render("cart");
