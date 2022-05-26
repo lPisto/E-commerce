@@ -15,28 +15,7 @@
 </head>
 
 <body>
-    <header>
-        <nav class="navbar navbar-inverse navbar-fixed-top">
-            <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#mynavbar">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a href="index"><span class="navbar-brand">Market</a> 
-                </div>
-                <div class="collapse navbar-collapse" id="mynavbar">
-                    <ul class="nav navbar-nav navbar-right">
-                       
-                        <li><a href="/"><span class="glyphicon glyphicon-search"></span></a></li>
-                        <li><a href="cart"><span class="glyphicon glyphicon-shopping-cart"></span></a></li>
-                        <li><a href="/"><span class="	glyphicon glyphicon-user"></span></a></li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
+    <%- include("partials/header") %>
     <main>
         <div class="container">
             <div class="jumbotron jumbotron_style">
@@ -137,55 +116,42 @@
 
         <!-- CART -->
 
-        <div class="container tabl">
+        <div class="container tabl" id="cart">
             <div class="row">
                 <div class="col-md-6 col-md-offset-3">
                     <div class="table-responsive table-condensed table_style">
                         <h1>Your Cart</h1>
                         <div class="table">
-                            <table class="table table-bordered table-striped table-hover" id='table'>
-                                <tbody>
-                                    <tr>
-                                        <th>Product</th>
-                                        <th id="price-table">Price</th>
-                                        <th id="amount-table">Amount</th>
-                                    </tr>
-                                    <tr>
-                                        <td><b>Total</b></td>
-                                        <td id="total">$0</td>
-                                        <td><a href="success"><button type="submit" class="btn btn-success" id="total-btn">
-                                            Purchase
-                                        </button></a>
-                                        </td>
-                                        <td><a class="btn btn-danger btn-delete" id="totalTrash"><i class="bi-trash"></i></a</a>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                            <form action="/purchased" method="POST">
+                                <table class="table table-bordered table-striped table-hover" id='table'>
+                                    <tbody>
+                                        <tr>
+                                            <th>Product</th>
+                                            <th id="price-table">Price</th>
+                                            <th id="amount-table">Amount</th>
+                                        </tr>
+                                        <tr>
+                                            <td><b>Total</b></td>
+                                            <td id="total">$0</td>
+                                            <td><a><button type="submit" class="btn btn-success" id="total-btn">
+                                                Purchase
+                                            </button></a>
+                                            </td>
+                                            <td><a class="btn btn-danger btn-delete" id="totalTrash"><i class="bi-trash"></i></a</a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </main>
-    <footer>
-        <nav class="navbar navbar-inverse">
-            <div class="container">
-                <div class="navbar-header">
-                    <a href="index" class="navbar-brand">Home</a>
-                    <a href="index" class="navbar-brand">Products</a>
-                    <a href="index" class="navbar-brand">Cart</a>
-                </div>
-                <div class="collapse navbar-collapse" id="mynavbar">
-                    <ul class="nav navbar-nav navbar-right">
-                       
-                        <li><a href="/">Contact</a></li>
-                        <li><a href="/">About us</a></li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </footer>
+
+    <%- include("partials/footer") %>
+
     <script src="./market.js"></script>
 </body>
 

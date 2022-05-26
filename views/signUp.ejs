@@ -23,11 +23,10 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a href="index"><span class="navbar-brand">Market</a> 
+                    <a href="/"><span class="navbar-brand">Market</a> 
                 </div>
                 <div class="collapse navbar-collapse" id="mynavbar">
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a href="products"><span class="glyphicon glyphicon-tags"> Products</span></a></li>
                         <li><a href="login"><span class="glyphicon glyphicon-log-in"> Login</span></a></li>
                     </ul>
                 </div>
@@ -84,30 +83,15 @@
                             <p><i <% %> class='<%= errorTriangle %>'<% %>></i> <b><%= userExists %></b></p>
                         </div>
                         <button id="registerSubmitBtn" class="btn btn-primary">Register</button>
+                        <div class="panel-footer">
+                            Do you have an account?<a href="login" color:blue;>Login</a>
+                        </div> 
                     </form>
                 </div>
             </div>
         </div>
     </main>
-    <footer>
-        <nav class="navbar navbar-inverse">
-            <div class="container">
-                <div class="navbar-header">
-                    <a href="index" class="navbar-brand">Home</a>
-                    <a href="index" class="navbar-brand">Products</a>
-                    <a href="index" class="navbar-brand">Cart</a>
-                </div>
-                <div class="collapse navbar-collapse" id="mynavbar">
-                    <ul class="nav navbar-nav navbar-right">
-                       
-                        <li><a href="/">Contact</a></li>
-                        <li><a href="/">About us</a></li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </footer>
-
+    <%- include("partials/footer") %>
     <script src="./market.js"></script>
     <script src="./registerForm.js"></script>
 </body>

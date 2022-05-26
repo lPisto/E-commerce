@@ -1,14 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const loginController = require('../controllers/loginController')
+const productsController = require('../controllers/productsController');
 
-router.get("/", (req, res) => {
-  res.render("index");
-});
+// Users 
 
-router.get("/index", (req, res) => {
-  res.render("index");
-});
+router.get("/", loginController.index);
 
 router.get("/products", (req, res) => {
   res.render("products");
@@ -35,5 +32,17 @@ router.get("/success", (req, res) => {
 router.get("/settings", (req, res) => {
   res.render("settings");
 });
+
+router.post("/purchased", productsController.purchased)
+
+router.post("/updateAccount", loginController.updateAccount)
+
+// Admin 
+router.get("/adminProducts", productsController.list);
+
+router.post('/add', productsController.save);
+router.get('/delete/:id', productsController.delete);
+router.get('/update/:id', productsController.edit);
+router.post('/update/:id', productsController.update);
 
 module.exports = router;

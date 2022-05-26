@@ -4,6 +4,9 @@
 *{
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
+html{
+    scroll-behavior: smooth;
+}
 .head_logo{
     height: 30px;
     width: 30px;
@@ -142,7 +145,25 @@ footer{
  }
  .success{
      margin: 10em auto;
- }
+}
+
+#loginBtn {
+    display: inline-block;
+    margin-bottom: 0.5em;
+}
+
+#registerSubmitBtn{
+    display: inline-block;
+    margin-bottom: 1em;
+}
+
+.panel-footer {
+    margin-top: 0em
+}
+
+#displayNone {
+    display: none
+}
 
   /* ? SHOPPING CART */
   .img-responsive {

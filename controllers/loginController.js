@@ -1,14 +1,31 @@
 const bcrypt = require("bcryptjs");
+const crypto = require("crypto");
+const jwt = require("jsonwebtoken");
+const nodemailer = require("nodemailer");
+
+const index = (req, res) => {
+  if (req.session.loggedIn != true) {
+    res.render("index", { 
+      logOutBtn: "displayNone",
+      signUpBtn: "",
+      loginBtn: ""
+    });
+  } else {
+    res.render("index", { 
+      logOutBtn: "",
+      signUpBtn: "displayNone",
+      loginBtn: "displayNone"
+    });
+  }
+}
 
 const login = (req, res) => {
   if (req.session.loggedIn != true) {
     res.render("login", {
         loginError: "",
-        errorTriangle: "",
-      });
-  } else {
-    res.redirect("/");
-  }
+        errorTriangle: ""
+    });
+  };
 };
 
 const signUp = (req, res) => {
@@ -23,10 +40,10 @@ const signUp = (req, res) => {
 };
 
 const logOut = (req, res) => {
-    if(req.session.loggedIn == true) {
-        req.session.destroy();
-    }
-    res.redirect('/')
+  if(req.session.loggedIn == true) {
+    req.session.destroy();
+  }
+  res.redirect('/')
 }
 
 const auth = (req, res) => {
@@ -47,6 +64,10 @@ const auth = (req, res) => {
               } else {
                 req.session.loggedIn = true;
                 req.session.name = element.name;
+                req.session.surname = element.surname;
+                req.session.email = element.email;
+                req.session.phone = element.phone;
+                req.session.password = element.password;
 
                 res.redirect("/");
               }
@@ -109,10 +130,37 @@ const storeUser = (req, res) => {
   });
 };
 
+const updateAccount = (req, res) => {
+  const data = req.body;
+  const email = req.session.email;
+  const oldPasswordSession = req.session.password;
+  const oldPasswordForm = data.oldPassword;
+  const password = data.newPassword;
+
+  bcrypt.hash(password, 12).then((hash) => {
+    const newPassword = hash;
+
+    bcrypt.compare(oldPasswordForm, oldPasswordSession, (err, isMatch) => {
+    if(isMatch) {
+      req.getConnection((err, conn) => {
+      conn.query("UPDATE users SET password = ? WHERE email = ?;", 
+      [newPassword, email]
+      )
+    })
+    }
+  })
+  })
+
+  
+}
+
+
 module.exports = {
   login,
   signUp,
   logOut,
   storeUser,
   auth,
+  index,
+  updateAccount
 };
