@@ -1,5 +1,5 @@
 const form = document.getElementById("form");
-const inputs = document.querySelectorAll("#formInput");
+const inputs = document.querySelectorAll(".formInput");
 const submitBtn = document.getElementById("registerSubmitBtn");
 const formSettings = document.getElementById("formSettings");
 

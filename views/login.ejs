@@ -45,10 +45,10 @@
                             <p class="text-warning">Login to make a purchase</p>
                             <form class="center" action="/login" method="POST" id="form">
                                 <div class="form-group">
-                                    <input type="email" class="form-control" placeholder="Email" name="email" id="formInput">
+                                    <input type="email" class="form-control formInput" placeholder="Email" name="email">
                                 </div>
                                 <div class="form-group">
-                                    <input type="password" class="password" placeholder="Password" name="password" id="formInput">
+                                    <input type="password" class="password formInput" placeholder="Password" name="password">
                                 </div>
                                 <div id="userExists">
                                     <p><i <% %> class='<%= errorTriangle %>'<% %>></i> <b><%= loginError %></b></p>

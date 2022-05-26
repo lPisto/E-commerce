@@ -164,6 +164,9 @@ footer{
 #displayNone {
     display: none
 }
+#changePassword {
+    margin-top: 2em
+}
 
   /* ? SHOPPING CART */
   .img-responsive {
@@ -248,7 +251,7 @@ footer{
     -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
     transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
 }
-#formInput:focus {
+.formInput:focus {
 	border: 3px solid #0075FF;
 	outline: none;
 	box-shadow: 3px 0px 30px rgba(163,163,163, 0.4);
@@ -280,7 +283,7 @@ footer{
     color: #bb2929;
 	opacity: 1;
 }
-.incorrectForm #formInput {
+.incorrectForm .formInput {
     border: 3px solid #bb2929;
 }
 #confirm_password {

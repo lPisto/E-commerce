@@ -130,6 +130,17 @@ const storeUser = (req, res) => {
   });
 };
 
+const settings = (req, res) => {
+  res.render("settings", {
+    passwordError: "",
+    errorTriangle: "",
+    settingsName: req.session.name,
+    settingsSurname: req.session.surname,
+    settingsEmail: req.session.email,
+    settingsPhone: req.session.phone,
+  });
+}
+
 const updateAccount = (req, res) => {
   const data = req.body;
   const email = req.session.email;
@@ -141,14 +152,19 @@ const updateAccount = (req, res) => {
     const newPassword = hash;
 
     bcrypt.compare(oldPasswordForm, oldPasswordSession, (err, isMatch) => {
-    if(isMatch) {
-      req.getConnection((err, conn) => {
-      conn.query("UPDATE users SET password = ? WHERE email = ?;", 
-      [newPassword, email]
-      )
+      if(isMatch) {
+        req.getConnection((err, conn) => {
+          conn.query("UPDATE users SET password = ? WHERE email = ?;", 
+          [newPassword, email]
+          )
+        })
+      } else {
+        res.render("settings", {
+          passwordError: "The password do not match",
+          errorTriangle: "fas fa-exclamation-triangle"
+        });
+      }
     })
-    }
-  })
   })
 
   
@@ -162,5 +178,6 @@ module.exports = {
   storeUser,
   auth,
   index,
-  updateAccount
+  updateAccount,
+  settings
 };

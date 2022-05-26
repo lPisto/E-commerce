@@ -29,9 +29,7 @@ router.get("/success", (req, res) => {
   res.render("success");
 });
 
-router.get("/settings", (req, res) => {
-  res.render("settings");
-});
+router.get("/settings", loginController.settings);
 
 router.post("/purchased", productsController.purchased)
 

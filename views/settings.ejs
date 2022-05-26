@@ -22,27 +22,47 @@ and open the template in the editor.
         <div class="container">
             <div class="row row_style">
                 <div class="col-md-4 col-md-offset-4">
-                    <form action="/updateAccount" method="POST" id="formSettings">
-                        <p>
-                            <h4>Change Password</h4>
-                        </p>
-                        <div class="form-group">
-                            <input type="password" class="form-control" placeholder="Old Password" name="oldPassword">
+                    <form action="/updateAccount" method="POST" id="settingsForm">
+                        <div id="changeAccountInfo">
+                            <h4>Account information</h4>
+                            <div class="form-group">
+                                <b>Name</b>
+                                <input type="text" placeholder="<%= settingsName %>" id="settingsName" class="form-control">
+                                <b>Surname</b>
+                                <input type="text" placeholder="<%= settingsSurname %>" id="settingsSurname" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <b>Email</b>
+                                <input type="text" placeholder="<%= settingsEmail %>" id="settingsEmail" class="form-control settingsInput" name="newEmail">
+                                <b>Phone</b>
+                                <input type="text" placeholder="<%= settingsPhone %>" id="settingsPhone" class="form-control settingsInput" name="newPhone">
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <input type="password" class="form-control" placeholder="New Password" name="newPassword">
+                        <div id="changePassword">
+                            <p>
+                                <h4>Change Password</h4>
+                            </p>
+                            <div class="form-group">
+                                <b>Old password</b>
+                                <input type="password" class="form-control settingsInput" placeholder="Old Password" name="oldPassword" id="oldPassword">
+                            </div>
+                            <div class="form-group">
+                                <b>New password</b>
+                                <input type="password" class="form-control settingsInput" placeholder="New Password" name="newPassword" id="newPassword">
+                            </div>
+                            <div class="form-group">
+                                <b>Confirm password</b>
+                                <input type="password" class="form-control settingsInput" placeholder="Confirm Password" name="confirmNewPassword" id="confirmNewPassword">
+                            </div>
+                            <button class="btn btn-primary" id="settingsSaveBtn">Save Changes</button>
                         </div>
-                        <div class="form-group">
-                            <input type="password" class="form-control" placeholder="Confirm New Password" name="confirmNewPassword">
-                        </div>
-                        <button class="btn btn-primary">Change</button>
                     </form>
                 </div>
             </div>
         </div>
     </main>
     <%- include("partials/footer") %>
-    <script src="./market.js"></script>
+    <script src="./settingsForm.js"></script>
 </body>
 
 </html>
