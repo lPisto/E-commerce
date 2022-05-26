@@ -7,12 +7,13 @@ and open the template in the editor.
 <html>
 
 <head>
+    <link rel="icon" type="image/png" href="img/logo2.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://kit.fontawesome.com/d520c148c3.js" crossorigin="anonymous"></script>
     <title>Market</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="/css/style.css" rel="stylesheet">
 </head>
 
@@ -42,7 +43,7 @@ and open the template in the editor.
                                     <div class="form-group">
                                         <b>Email</b>
                                         <input type="text" placeholder="<%= settingsEmail %>" id="settingsEmail" class="form-control settingsInput" name="email">
-                                        <i class="formulario__validacion-estado fas"></i>
+                                        <i class="formulario__validacion-info fas"></i>
                                     </div>
                                     <p class="formInputError">Please insert a valid email</p>
                                 </div>
@@ -50,7 +51,7 @@ and open the template in the editor.
                                     <div class="form-group">
                                         <b>Phone</b>
                                         <input type="text" placeholder="<%= settingsPhone %>" id="settingsPhone" class="form-control settingsInput" name="phone">
-                                        <i class="formulario__validacion-estado fas"></i>
+                                        <i class="formulario__validacion-info fas"></i>
                                     </div>
                                     <p class="formInputError">Please insert a valid phone</p>
                                 </div>
@@ -71,7 +72,7 @@ and open the template in the editor.
                                     <div class="form-group">
                                         <b>New password</b>
                                         <input type="password" class="form-control settingsInput password" placeholder="New Password" name="password" id="newPassword">
-                                        <i class="formulario__validacion-estado fas"></i>
+                                        <i class="formulario__validacion-pass fas"></i>
                                     </div>
                                     <p class="formInputError">Make sure that your password be at least 6 characters long including a number and an uppercase letter.</p> 
                                 </div>
@@ -79,13 +80,13 @@ and open the template in the editor.
                                     <div class="form-group">
                                         <b>Confirm password</b>
                                         <input type="password" class="form-control settingsInput confirm_password" placeholder="Confirm Password" name="confirm_password" id="confirmNewPassword">
-                                        <i class="formulario__validacion-estado fas"></i>
+                                        <i class="formulario__validacion-pass fas"></i>
                                     </div>
                                     <p id="confirm_password" class="formInputError">Make sure that both passwords match</p> 
                                 </div>
                             </div>
-                            <div id="passwordError">
-                                <p class="formInputError"><i <% %> class='<%= errorTriangle %>'<% %>></i> <b><%= passwordError %></b></p>
+                            <div id="<%= changePasswordError %>">
+                                <p id="userExists"><i class="fas fa-exclamation-triangle"></i> <b>Incorrect Password!</b></p>
                             </div>
                             <button class="btn btn-primary" id="settingsSaveBtn">Save Changes</button>
                         </div>

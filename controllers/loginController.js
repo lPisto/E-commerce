@@ -109,17 +109,7 @@ const storeUser = (req, res) => {
 
             req.getConnection((err, conn) => {
               conn.query(
-                "INSERT INTO users (name, surname, email, phone, password) VALUES ('" +
-                  name +
-                  "','" +
-                  surname +
-                  "','" +
-                  email +
-                  "','" +
-                  phone +
-                  "','" +
-                  password +
-                  "')"
+                "INSERT INTO users (name, surname, email, phone, password, role) VALUES ('" + name + "','" + surname + "','" + email + "','" + phone + "','" + password + "','" + "user" + "')"
               );
               res.redirect("login");
             });
@@ -132,8 +122,7 @@ const storeUser = (req, res) => {
 
 const settings = (req, res) => {
   res.render("settings", {
-    passwordError: "",
-    errorTriangle: "",
+    changePasswordError: "displayNone",
     settingsName: req.session.name,
     settingsSurname: req.session.surname,
     settingsEmail: req.session.email,
@@ -151,7 +140,7 @@ const updateAccount = (req, res) => {
   bcrypt.hash(password, 12).then((hash) => {
     const newPassword = hash;
 
-    bcrypt.compare(oldPasswordForm, oldPasswordSession, (err, isMatch) => {
+    bcrypt.compare("oldPasswordForm", "oldPasswordSession", (err, isMatch) => {
       if(isMatch) {
         req.getConnection((err, conn) => {
           conn.query("UPDATE users SET password = ? WHERE email = ?;", 
@@ -161,8 +150,7 @@ const updateAccount = (req, res) => {
         res.redirect("/")
       } else {
         res.render("settings", {
-          passwordError: "Incorrect Password!",
-          errorTriangle: "fas fa-exclamation-triangle",
+          changePasswordError: "changePasswordError",
           settingsName: req.session.name,
           settingsSurname: req.session.surname,
           settingsEmail: req.session.email,
