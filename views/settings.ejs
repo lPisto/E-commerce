@@ -21,38 +21,71 @@ and open the template in the editor.
     <main>
         <div class="container">
             <div class="row row_style">
-                <div class="col-md-4 col-md-offset-4">
+                <div class="">
                     <form action="/updateAccount" method="POST" id="settingsForm">
-                        <div id="changeAccountInfo">
+                        <div id="changeAccountInfo" class="col-md-5">
                             <h4>Account information</h4>
                             <div class="form-group">
-                                <b>Name</b>
-                                <input type="text" placeholder="<%= settingsName %>" id="settingsName" class="form-control">
-                                <b>Surname</b>
-                                <input type="text" placeholder="<%= settingsSurname %>" id="settingsSurname" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <b>Email</b>
-                                <input type="text" placeholder="<%= settingsEmail %>" id="settingsEmail" class="form-control settingsInput" name="newEmail">
-                                <b>Phone</b>
-                                <input type="text" placeholder="<%= settingsPhone %>" id="settingsPhone" class="form-control settingsInput" name="newPhone">
+                                <div id="nameGroup">
+                                    <div class="form-group">
+                                        <b>Name</b>
+                                    <input type="text" placeholder="<%= settingsName %>" id="settingsName" class="form-control">
+                                    </div>
+                                </div>
+                                <div id="surnameGroup">
+                                    <div class="form-group">
+                                        <b>Surname</b>
+                                        <input type="text" placeholder="<%= settingsSurname %>" id="settingsSurname" class="form-control">
+                                    </div>
+                                </div>
+                                <div id="emailGroup">
+                                    <div class="form-group">
+                                        <b>Email</b>
+                                        <input type="text" placeholder="<%= settingsEmail %>" id="settingsEmail" class="form-control settingsInput" name="email">
+                                        <i class="formulario__validacion-estado fas"></i>
+                                    </div>
+                                    <p class="formInputError">Please insert a valid email</p>
+                                </div>
+                                <div id="phoneGroup">
+                                    <div class="form-group">
+                                        <b>Phone</b>
+                                        <input type="text" placeholder="<%= settingsPhone %>" id="settingsPhone" class="form-control settingsInput" name="phone">
+                                        <i class="formulario__validacion-estado fas"></i>
+                                    </div>
+                                    <p class="formInputError">Please insert a valid phone</p>
+                                </div>
                             </div>
                         </div>
-                        <div id="changePassword">
+                        <div id="changePassword" class="col-md-6">
                             <p>
                                 <h4>Change Password</h4>
                             </p>
                             <div class="form-group">
-                                <b>Old password</b>
-                                <input type="password" class="form-control settingsInput" placeholder="Old Password" name="oldPassword" id="oldPassword">
+                                <div id="oldPasswordGroup">
+                                    <div class="form-group">
+                                        <b>Old password</b>
+                                        <input type="password" class="form-control settingsInput" placeholder="Old Password" name="oldPassword" id="oldPassword">
+                                    </div>
+                                </div>
+                                <div id="passwordGroup">
+                                    <div class="form-group">
+                                        <b>New password</b>
+                                        <input type="password" class="form-control settingsInput password" placeholder="New Password" name="password" id="newPassword">
+                                        <i class="formulario__validacion-estado fas"></i>
+                                    </div>
+                                    <p class="formInputError">Make sure that your password be at least 6 characters long including a number and an uppercase letter.</p> 
+                                </div>
+                                <div id="confirm_passwordGroup">
+                                    <div class="form-group">
+                                        <b>Confirm password</b>
+                                        <input type="password" class="form-control settingsInput confirm_password" placeholder="Confirm Password" name="confirm_password" id="confirmNewPassword">
+                                        <i class="formulario__validacion-estado fas"></i>
+                                    </div>
+                                    <p id="confirm_password" class="formInputError">Make sure that both passwords match</p> 
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <b>New password</b>
-                                <input type="password" class="form-control settingsInput" placeholder="New Password" name="newPassword" id="newPassword">
-                            </div>
-                            <div class="form-group">
-                                <b>Confirm password</b>
-                                <input type="password" class="form-control settingsInput" placeholder="Confirm Password" name="confirmNewPassword" id="confirmNewPassword">
+                            <div id="passwordError">
+                                <p class="formInputError"><i <% %> class='<%= errorTriangle %>'<% %>></i> <b><%= passwordError %></b></p>
                             </div>
                             <button class="btn btn-primary" id="settingsSaveBtn">Save Changes</button>
                         </div>

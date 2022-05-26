@@ -167,6 +167,9 @@ footer{
 #changePassword {
     margin-top: 2em
 }
+#changePassword {
+    margin-top: 0.2em
+}
 
   /* ? SHOPPING CART */
   .img-responsive {
@@ -256,6 +259,11 @@ footer{
 	outline: none;
 	box-shadow: 3px 0px 30px rgba(163,163,163, 0.4);
 }
+.settingsInput:focus {
+	border: 3px solid #0075FF;
+	outline: none;
+	box-shadow: 3px 0px 30px rgba(163,163,163, 0.4);
+}
 .formulario__validacion-estado {
     position: absolute;
 	margin-top: -1.7em;
@@ -284,6 +292,9 @@ footer{
 	opacity: 1;
 }
 .incorrectForm .formInput {
+    border: 3px solid #bb2929;
+}
+.incorrectForm .settingsInput {
     border: 3px solid #bb2929;
 }
 #confirm_password {

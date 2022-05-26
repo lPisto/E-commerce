@@ -1,9 +1,5 @@
-const settingsEmail = document.getElementById("settingsEmail");
-const settingsPhone = document.getElementById("settingsPhone");
-const oldPassword = document.getElementById("oldPassword");
-const newPassword = document.getElementById("newPassword");
-const confirmNewPassword = document.getElementById("confirmNewPassword");
-const settingsSaveBtn = document.getElementById("settingsSaveBtn");
+const form = document.getElementById("settingsForm");
+const submitBtn = document.getElementById("settingsSaveBtn");
 const inputs = document.querySelectorAll(".settingsInput");
 
 var disabled = document.getElementById("settingsName").disabled;
@@ -26,24 +22,74 @@ submitBtn.disabled = true;
 
 const validateForm = (e) => {
     switch (e.target.name) {
-        case 'newEmail':
+        case 'email':
             validateField(expresiones.email, e.target, 'email');
         break;
-        case 'newPhone':
+        case 'phone':
             validateField(expresiones.phone, e.target, 'phone');
         break;
-        case 'newPassword':
+        case 'password':
             validateField(expresiones.password, e.target, 'password');
             confirmPassword();
         break;
-        case 'confirmNewPassword':
+        case 'confirm_password':
             confirmPassword();
         break;
     }
-    if (fields.email && fields.phone && fields.password == true) {
+    if (fields.password == true) {
         submitBtn.disabled = false;
     } else {
         submitBtn.disabled = true;
+    }
+}
+
+const validateField = (expresion, input, field) => {
+    if(expresion.test(input.value)) {
+        document.getElementById(`${field}Group`).classList.remove('incorrectForm');
+        document.getElementById(`${field}Group`).classList.add('correctForm');
+        document.querySelector(`#${field}Group i`).classList.add('fa-circle-check');
+        document.querySelector(`#${field}Group i`).classList.remove('fa-times-circle'); 
+        if(field !== 'name' && field !== 'surname'){
+            document.querySelector(`#${field}Group .formInputError`).classList.remove('formInputErrorActive');
+        }  
+        fields[field] = true;
+    } else {
+        document.getElementById(`${field}Group`).classList.add('incorrectForm');
+        document.getElementById(`${field}Group`).classList.remove('correctForm');
+        document.querySelector(`#${field}Group i`).classList.remove('fa-circle-check');
+        document.querySelector(`#${field}Group i`).classList.add('fa-times-circle'); 
+        document.querySelector(`#${field}Group .formInputError`).classList.add('formInputErrorActive');
+        fields[field] = false;
+    }
+}
+
+const confirmPassword = () => {
+    const password = document.getElementsByClassName("password");
+    const confirm_password = document.getElementsByClassName("confirm_password");
+    
+    if (password[0].value.length > 0) {
+        if (password[0].value !== confirm_password[0].value) {
+            document.getElementById(`confirm_passwordGroup`).classList.add('incorrectForm');
+            document.getElementById(`confirm_passwordGroup`).classList.remove('correctForm');
+            document.querySelector(`#confirm_passwordGroup i`).classList.remove('fa-circle-check');
+            document.querySelector(`#confirm_passwordGroup i`).classList.add('fa-times-circle'); 
+            document.querySelector(`#confirm_passwordGroup .formInputError`).classList.add('formInputErrorActive');
+            fields['password'] = false;
+        } else if (password[0].value == confirm_password[0].value){
+            document.getElementById(`confirm_passwordGroup`).classList.remove('incorrectForm');
+            document.getElementById(`confirm_passwordGroup`).classList.add('correctForm');
+            document.querySelector(`#confirm_passwordGroup i`).classList.add('fa-circle-check');
+            document.querySelector(`#confirm_passwordGroup i`).classList.remove('fa-times-circle'); 
+            document.querySelector(`#confirm_passwordGroup .formInputError`).classList.remove('formInputErrorActive');
+            fields['password'] = true;
+        } 
+    } else {
+        document.getElementById(`confirm_passwordGroup`).classList.remove('correctForm');
+        document.getElementById(`confirm_passwordGroup`).classList.remove('incorrectForm');
+        document.querySelector(`#confirm_passwordGroup i`).classList.remove('fa-times-circle');
+        document.querySelector(`#confirm_passwordGroup i`).classList.remove('fa-circle-check');
+        document.querySelector(`#confirm_passwordGroup .formInputError`).classList.remove('formInputErrorActive');
+        fields['password'] = false;
     }
 }
 

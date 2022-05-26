@@ -137,7 +137,7 @@ const settings = (req, res) => {
     settingsName: req.session.name,
     settingsSurname: req.session.surname,
     settingsEmail: req.session.email,
-    settingsPhone: req.session.phone,
+    settingsPhone: req.session.phone
   });
 }
 
@@ -146,7 +146,7 @@ const updateAccount = (req, res) => {
   const email = req.session.email;
   const oldPasswordSession = req.session.password;
   const oldPasswordForm = data.oldPassword;
-  const password = data.newPassword;
+  const password = data.password;
 
   bcrypt.hash(password, 12).then((hash) => {
     const newPassword = hash;
@@ -158,16 +158,19 @@ const updateAccount = (req, res) => {
           [newPassword, email]
           )
         })
+        res.redirect("/")
       } else {
         res.render("settings", {
-          passwordError: "The password do not match",
-          errorTriangle: "fas fa-exclamation-triangle"
+          passwordError: "Incorrect Password!",
+          errorTriangle: "fas fa-exclamation-triangle",
+          settingsName: req.session.name,
+          settingsSurname: req.session.surname,
+          settingsEmail: req.session.email,
+          settingsPhone: req.session.phone
         });
       }
     })
   })
-
-  
 }
 
 

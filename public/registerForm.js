@@ -1,7 +1,6 @@
 const form = document.getElementById("form");
 const inputs = document.querySelectorAll(".formInput");
 const submitBtn = document.getElementById("registerSubmitBtn");
-const formSettings = document.getElementById("formSettings");
 
 const expresiones = {
   name: /^[a-zA-ZÀ-ÿ\s]{1,50}$/, // Letras y espacios, pueden llevar acentos.
