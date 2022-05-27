@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const loginController = require('../controllers/loginController')
 const productsController = require('../controllers/productsController');
+const jwt = require("jsonwebtoken");
 
 // Users 
 
@@ -35,7 +36,10 @@ router.post("/purchased", productsController.purchased)
 
 router.post("/updateAccount", loginController.updateAccount)
 
-// Admin 
+// Admin routes
+router.post("/success", loginController.verifyToken, loginController.adminRoute);
+
+// Admin products
 router.get("/adminProducts", productsController.list);
 
 router.post('/add', productsController.save);

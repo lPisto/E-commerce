@@ -62,6 +62,12 @@ const auth = (req, res) => {
                   errorTriangle: "fas fa-exclamation-triangle",
                 });
               } else {
+                jwt.sign({userData}, 'secretkey', (err, token) => {
+                  res.json({
+                    token
+                  })
+                })
+                
                 req.session.loggedIn = true;
                 req.session.name = element.name;
                 req.session.surname = element.surname;
@@ -83,6 +89,28 @@ const auth = (req, res) => {
     );
   });
 };
+
+const adminRoute = (req, res) => {
+  jwt.verify(req.token, 'secretkey', (err, authData) => {
+    if(err) {
+      res.sendStatus(403)
+    } else {
+      res.render("cart")
+    }
+  })
+}
+
+function verifyToken(req, res, next){
+  const bearerHeader =  req.headers['authorization'];
+
+  if(typeof bearerHeader !== 'undefined'){
+       const bearerToken = bearerHeader.split(" ")[1];
+       req.token  = bearerToken;
+       next();
+  }else{
+      res.sendStatus(403);
+  }
+}
 
 const storeUser = (req, res) => {
   const data = req.body;
@@ -170,5 +198,7 @@ module.exports = {
   auth,
   index,
   updateAccount,
-  settings
+  settings,
+  adminRoute,
+  verifyToken
 };
