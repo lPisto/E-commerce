@@ -1,8 +1,33 @@
 const controller = {};
+const mercadopago = require("mercadopago");
 
-// Users 
+// Users
+
+// Payment
+mercadopago.configure({
+    access_token: "TEST-4244969390240596-052801-6fd8c5a2f40fe10f16c4f30bccd50766-564636510",
+});
+
 controller.purchased = (req, res) => {
-  res.redirect("/success")
+  let preference = {
+    // modificar items con los productos
+    items: [
+      {
+        title: "Mi producto",
+        unit_price: 100,
+        quantity: 1,
+      },
+    ],
+  };
+
+  mercadopago.preferences.create(preference)
+  .then(function (response) {
+    res.redirect(response.body.init_point)
+    console.log(response.body)
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
 }
 
 // Admin

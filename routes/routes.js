@@ -37,7 +37,7 @@ router.post("/purchased", productsController.purchased)
 router.post("/updateAccount", loginController.updateAccount)
 
 // Admin routes
-router.post("/success", loginController.verifyToken, loginController.adminRoute);
+router.get("/success", loginController.verifyToken, loginController.adminRoute);
 
 // Admin products
 router.get("/adminProducts", productsController.list);
