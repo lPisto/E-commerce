@@ -160,7 +160,9 @@ const settings = (req, res) => {
 
 const updateAccount = (req, res) => {
   const data = req.body;
+  const phone = data.phone 
   const email = req.session.email;
+  const emailForm = data.email;
   const oldPasswordSession = req.session.password;
   const oldPasswordForm = data.oldPassword;
   const password = data.password;
@@ -168,7 +170,8 @@ const updateAccount = (req, res) => {
   bcrypt.hash(password, 12).then((hash) => {
     const newPassword = hash;
 
-    bcrypt.compare("oldPasswordForm", "oldPasswordSession", (err, isMatch) => {
+    if (oldPasswordForm.length > 0) {
+      bcrypt.compare(oldPasswordForm, oldPasswordSession, (err, isMatch) => {
       if(isMatch) {
         req.getConnection((err, conn) => {
           conn.query("UPDATE users SET password = ? WHERE email = ?;", 
@@ -186,7 +189,25 @@ const updateAccount = (req, res) => {
         });
       }
     })
+    }
+    
   })
+
+  if(phone.length > 0) {
+    req.getConnection((err, conn) => {
+      conn.query("UPDATE users SET phone = ? WHERE email = ?;", 
+      [phone, email]
+      )
+    })
+  }
+
+  if(emailForm.length > 0) {
+    req.getConnection((err, conn) => {
+      conn.query("UPDATE users SET email = ? WHERE email = ?;", 
+      [emailForm, email]
+      )
+    })
+  }
 }
 
 

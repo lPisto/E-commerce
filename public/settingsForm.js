@@ -36,7 +36,7 @@ const validateForm = (e) => {
             confirmPassword();
         break;
     }
-    if (fields.password == true) {
+    if (fields.password || fields.email || fields.phone == true) {
         submitBtn.disabled = false;
     } else {
         submitBtn.disabled = true;
@@ -59,6 +59,14 @@ const validateField = (expresion, input, field) => {
         document.querySelector(`#${field}Group i`).classList.remove('fa-circle-check');
         document.querySelector(`#${field}Group i`).classList.add('fa-times-circle'); 
         document.querySelector(`#${field}Group .formInputError`).classList.add('formInputErrorActive');
+        fields[field] = false;
+    }
+    if (input.value < 1) {
+        document.getElementById(`${field}Group`).classList.remove('correctForm');
+        document.getElementById(`${field}Group`).classList.remove('incorrectForm');
+        document.querySelector(`#${field}Group i`).classList.remove('fa-times-circle');
+        document.querySelector(`#${field}Group i`).classList.remove('fa-circle-check');
+        document.querySelector(`#${field}Group .formInputError`).classList.remove('formInputErrorActive');
         fields[field] = false;
     }
 }

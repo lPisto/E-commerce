@@ -1,4 +1,5 @@
 const controller = {};
+const e = require( "connect-flash" );
 const mercadopago = require("mercadopago");
 
 // Users
@@ -18,12 +19,23 @@ controller.purchased = (req, res) => {
         quantity: 1,
       },
     ],
+    "back_urls": {
+      "success": "localhost:4000/"
+    },
+    "auto_return": "approved",
   };
 
   mercadopago.preferences.create(preference)
   .then(function (response) {
-    res.redirect(response.body.init_point)
-    console.log(response.body)
+    if (req.session.loggedIn == true) {
+    // res.redirect(response.body.init_point)
+    response.body.payer.email = req.session.email
+    response.body.payer.name = req.session.name
+    response.body.payer.surname = req.session.surname
+    response.body.payer.phone.number = req.session.phone
+    } else {
+      res.redirect("/login")
+    }
   })
   .catch(function (error) {
     console.log(error);
