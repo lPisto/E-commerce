@@ -36,6 +36,12 @@ router.post("/purchased", productsController.purchased)
 
 router.post("/updateAccount", loginController.updateAccount)
 
+router.get("/shipment", (req, res) => {
+  res.redirect("/")
+})
+
+router.post("/shipment", productsController.shipment)
+
 // Admin routes
 router.get("/success", loginController.verifyToken, loginController.adminRoute);
 

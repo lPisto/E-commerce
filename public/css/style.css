@@ -170,6 +170,18 @@ footer{
 #changePassword {
     margin-top: 0.2em
 }
+#deliverGroup {
+    margin-top: 4.5em
+}
+#shipmentDescriptionGroup {
+    margin-top: 1em
+}
+#shipmentDescription {
+    height: 4em
+}
+#shipmentDescription::placeholder {
+    text-align: left;
+  }
 
   /* ? SHOPPING CART */
   .img-responsive {
@@ -264,6 +276,11 @@ footer{
 	outline: none;
 	box-shadow: 3px 0px 30px rgba(163,163,163, 0.4);
 }
+.shipmentInput:focus {
+	border: 3px solid #0075FF;
+	outline: none;
+	box-shadow: 3px 0px 30px rgba(163,163,163, 0.4);
+}
 .formulario__validacion-estado {
     position: absolute;
 	margin-top: -1.7em;
@@ -320,6 +337,9 @@ footer{
     border: 3px solid #bb2929;
 }
 .incorrectForm .settingsInput {
+    border: 3px solid #bb2929;
+}
+.incorrectForm .shipmentInput {
     border: 3px solid #bb2929;
 }
 #confirm_password {

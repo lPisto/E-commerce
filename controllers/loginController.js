@@ -74,6 +74,11 @@ const auth = (req, res) => {
                 req.session.email = element.email;
                 req.session.phone = element.phone;
                 req.session.password = element.password;
+                req.session.country = element.country;
+                req.session.city = element.city;
+                req.session.street = element.street;
+                req.session.streetNumber = element.streetNumber;
+                req.session.flat = element.flat;
 
                 res.redirect("/");
               }
@@ -151,10 +156,10 @@ const storeUser = (req, res) => {
 const settings = (req, res) => {
   res.render("settings", {
     changePasswordError: "displayNone",
-    settingsName: req.session.name,
-    settingsSurname: req.session.surname,
-    settingsEmail: req.session.email,
-    settingsPhone: req.session.phone
+    userName: req.session.name,
+    userSurname: req.session.surname,
+    userEmail: req.session.email,
+    userPhone: req.session.phone
   });
 }
 
@@ -199,6 +204,7 @@ const updateAccount = (req, res) => {
       [phone, email]
       )
     })
+    res.redirect("/")
   }
 
   if(emailForm.length > 0) {
@@ -207,6 +213,7 @@ const updateAccount = (req, res) => {
       [emailForm, email]
       )
     })
+    res.redirect("/")
   }
 }
 

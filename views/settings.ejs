@@ -22,7 +22,7 @@ and open the template in the editor.
     <main>
         <div class="container">
             <div class="row row_style">
-                <div class="">
+                <div>
                     <form action="/updateAccount" method="POST" id="settingsForm">
                         <div id="changeAccountInfo" class="col-md-5">
                             <h4>Account information</h4>
@@ -30,19 +30,19 @@ and open the template in the editor.
                                 <div id="nameGroup">
                                     <div class="form-group">
                                         <b>Name</b>
-                                    <input type="text" placeholder="<%= settingsName %>" id="settingsName" class="form-control">
+                                    <input type="text" placeholder="<%= userName %>" id="settingsName" class="form-control">
                                     </div>
                                 </div>
                                 <div id="surnameGroup">
                                     <div class="form-group">
                                         <b>Surname</b>
-                                        <input type="text" placeholder="<%= settingsSurname %>" id="settingsSurname" class="form-control">
+                                        <input type="text" placeholder="<%= userSurname %>" id="settingsSurname" class="form-control">
                                     </div>
                                 </div>
                                 <div id="emailGroup">
                                     <div class="form-group">
                                         <b>Email</b>
-                                        <input type="text" placeholder="<%= settingsEmail %>" id="settingsEmail" class="form-control settingsInput" name="email">
+                                        <input type="text" placeholder="<%= userEmail %>" id="settingsEmail" class="form-control settingsInput" name="email">
                                         <i class="formulario__validacion-info fas"></i>
                                     </div>
                                     <p class="formInputError">Please insert a valid email</p>
@@ -50,7 +50,7 @@ and open the template in the editor.
                                 <div id="phoneGroup">
                                     <div class="form-group">
                                         <b>Phone</b>
-                                        <input type="text" placeholder="<%= settingsPhone %>" id="settingsPhone" class="form-control settingsInput" name="phone">
+                                        <input type="text" placeholder="<%= userPhone %>" id="settingsPhone" class="form-control settingsInput" name="phone">
                                         <i class="formulario__validacion-info fas"></i>
                                     </div>
                                     <p class="formInputError">Please insert a valid phone</p>

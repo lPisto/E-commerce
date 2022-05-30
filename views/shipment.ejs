@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <link rel="icon" type="image/png" href="img/logo2.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://kit.fontawesome.com/d520c148c3.js" crossorigin="anonymous"></script>
+    <title>Market</title>
+    <link href="/css/style.css" rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#mynavbar">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a href="/"><span class="navbar-brand">Market</a> 
+                </div>
+                <div class="collapse navbar-collapse" id="mynavbar">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="login"><span class="glyphicon glyphicon-log-in"> Login</span></a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <div class="container">
+            <div class="row row_style">
+                <div>
+                    <form action="/purchased" method="POST" id="shipmentForm">
+                        <div id="changeAccountInfo" class="col-md-5">
+                            <h2>Shipment</h2>
+                            <div class="form-group">
+                                <div id="nameGroup">
+                                    <div class="form-group">
+                                        <b>Name</b>
+                                        <input type="text" id="shipmentName" class="form-control shipmentInput" placeholder="<%= userName %>" name="name">
+                                        <i class="formulario__validacion-info fas"></i>
+                                    </div>
+                                </div>
+                                <div id="surnameGroup">
+                                    <div class="form-group">
+                                        <b>Surname</b>
+                                        <input type="text" id="shipmentSurname" class="form-control shipmentInput" placeholder="<%= userSurname %>" name="surname">
+                                        <i class="formulario__validacion-info fas"></i>
+                                    </div>
+                                </div>
+                                <div id="emailGroup">
+                                    <div class="form-group">
+                                        <b>Email</b>
+                                        <input type="email" id="shipmentEmail" class="form-control shipmentInput" placeholder="<%= userEmail %>" name="email">
+                                        <i class="formulario__validacion-info fas"></i>
+                                    </div>
+                                    <p class="formInputError">Please insert a valid email</p>
+                                </div>
+                                <div id="phoneGroup">
+                                    <div class="form-group">
+                                        <b>Phone</b>
+                                        <input type="phone" id="shipmentPhone" class="form-control shipmentInput" placeholder="<%= userPhone %>" name="phone">
+                                        <i class="formulario__validacion-info fas"></i>
+                                    </div>
+                                    <p class="formInputError">Please insert a valid phone</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="deliverGroup" class="col-md-6">
+                            <div class="form-group">
+                                <div id="countryGroup">
+                                    <div class="form-group">
+                                        <b>Country</b>
+                                        <input type="text" id="shipmentCountry" class="form-control shipmentInput" placeholder="<%= userCountry %>" name="country">
+                                    </div>
+                                </div>
+                                <div id="cityGroup">
+                                    <div class="form-group">
+                                        <b>City</b>
+                                        <input type="text" id="shipmentCity" class="form-control shipmentInput" placeholder="<%= userCity %>" name="city">
+                                    </div>
+                                </div>
+                                <div id="streetGroup">
+                                    <div class="form-group">
+                                        <b>Street</b>
+                                        <input type="text" id="shipmentStreet" class="form-control shipmentInput" placeholder="<%= userStreet %>" name="street">
+                                    </div>
+                                    <div class="row">
+                                        <div class="streetNumberGroup">
+                                            <div class="col-xs-6">
+                                            <b>Number</b>
+                                            <input type="text" id="shipmentStreetNumber" class="form-control shipmentInput" placeholder="<%= userNumber %>" name="streetNumber">
+                                            <i class="formulario__validacion-info fas"></i>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="col-xs-6">
+                                            <b>Flat (optional)</b>
+                                            <input type="text" id="shipmentFlat" class="form-control shipmentInput" placeholder="<%= userFlat %>" name="flat">
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                                <div id="shipmentDescriptionGroup">
+                                    <div class="form-group">
+                                        <b>Additional indications (optional)</b>
+                                        <input id="shipmentDescription" type="text" class="form-control shipmentInput" placeholder="Description" name="description">
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" id="shipmentSaveBtn">Proceed to checkout</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+    <%- include("partials/footer") %>
+    <script src="./market.js"></script>
+    <script src="./shipmentForm.js"></script>
+</body>
+
+</html>
