@@ -173,9 +173,6 @@ footer{
 #deliverGroup {
     margin-top: 4.5em
 }
-#shipmentDescriptionGroup {
-    margin-top: 1em
-}
 #shipmentDescription {
     height: 4em
 }
@@ -296,6 +293,11 @@ footer{
 	margin-top: -1.7em;
 	margin-left: 31em;
 }
+.formulario__validacion-mid {
+    position: absolute;
+	margin-top: -1.7em;
+	margin-left: 17em;
+}
 .formInputError {
     color:#bb2929;
 	font-size: 12px;
@@ -321,6 +323,10 @@ footer{
 	color: #1ed12d;
 	opacity: 1;
 }
+.correctForm .formulario__validacion-mid {
+	color: #1ed12d;
+	opacity: 1;
+}
 .incorrectForm .formulario__validacion-estado {
     color: #bb2929;
 	opacity: 1;
@@ -330,6 +336,10 @@ footer{
 	opacity: 1;
 }
 .incorrectForm .formulario__validacion-info {
+    color: #bb2929;
+	opacity: 1;
+}
+.incorrectForm .formulario__validacion-mid {
     color: #bb2929;
 	opacity: 1;
 }

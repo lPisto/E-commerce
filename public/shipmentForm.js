@@ -1,38 +1,39 @@
 const form = document.getElementById("shipmentForm");
 const submitBtn = document.getElementById("shipmentSaveBtn");
 const inputs = document.querySelectorAll(".shipmentInput");
-const country = document.getElementById("shipmentCountry");
-const countryPh = document.getElementById("shipmentCountry").placeholder;
-const city = document.getElementById("shipmentCity");
-const cityPh = document.getElementById("shipmentCity").placeholder;
-const street = document.getElementById("shipmentStreet");
-const streetPh = document.getElementById("shipmentStreet").placeholder;
-const streetNumber = document.getElementById("shipmentStreetNumber");
-const streetNumberPh = document.getElementById("shipmentStreetNumber").placeholder;
-const flat = document.getElementById("shipmentFlat");
-const flatPh = document.getElementById("shipmentFlat").placeholder;
-const description = document.getElementById("shipmentDescription");
-const descriptionPh = document.getElementById("shipmentDescription").placeholder;
+const country = inputs[4]
+const countryPh = inputs[4].placeholder;
+const city = inputs[5]
+const cityPh = inputs[5].placeholder;
+const street = inputs[6]
+const streetPh = inputs[6].placeholder;
+const streetNumber = inputs[7]
+const streetNumberPh = inputs[7].placeholder;
+const flat = inputs[8]
+const flatPh = inputs[8].placeholder;
+const description = inputs[9]
+const descriptionPh = inputs[9].placeholder;
 
 const expresiones = {
     email: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
     phone: /^\d{7,15}$/,
+    country: /^[a-zA-ZÀ-ÿ\s]{1,50}$/,
+    city: /^[a-zA-ZÀ-ÿ\s]{1,50}$/,
+    street: /^[a-zA-ZÀ-ÿ\s]{1,50}$/,
     streetNumber: /^\d{1,15}$/
 };
 
 fields = {
-    name:false,
-    surname: false,
     email: false,
     phone: false,
+    country: false,
+    city: false,
+    street: false,
     streetNumber: false
 }
 
 if(countryPh == "Country" || cityPh == "City" || streetPh == "Street" || streetNumberPh == "Number") {
     submitBtn.disabled = true;
-    if (country.value > 0 && city.value > 0 && street.value > 0 && streetNumber.value > 0) {
-        submitBtn.disabled = false;
-    }
 } else {
     submitBtn.disabled = false;
 }
@@ -45,9 +46,27 @@ const validateForm = (e) => {
         case 'phone':
             validateField(expresiones.phone, e.target, 'phone');
         break;
-        case 'streetNumber':
-            validateField(expresiones.streetNumber, e.target, 'streetNumber');
-        break;
+    }
+    if (countryPh == "Country" || cityPh == "City" || streetPh == "Street" || streetNumberPh == "Number") {
+        switch (e.target.name) {
+            case 'country':
+                validateField(expresiones.country, e.target, 'country');
+            break;
+            case 'city':
+                validateField(expresiones.city, e.target, 'city');
+            break;
+            case 'street':
+                validateField(expresiones.street, e.target, 'street');
+            break;
+            case 'streetNumber':
+                validateField(expresiones.streetNumber, e.target, 'streetNumber');
+            break;
+        }
+        if (fields.country && fields.city && fields.street && fields.streetNumber == true) {
+            submitBtn.disabled = false;
+        } else {
+            submitBtn.disabled = true;
+        }
     }
 }
 

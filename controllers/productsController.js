@@ -138,7 +138,7 @@ controller.shipment = (req, res) => {
   const userFlat = req.session.flat;
 
   if (req.session.loggedIn == true) {
-    if(userCountry && userCity && userStreet && userNumber !== undefined) {
+    if(userCountry && userCity && userStreet && userNumber && userFlat !== undefined || userCountry && userCity && userStreet && userNumber && userFlat !== '') {
       res.render("shipment", {
         userName: userName,
         userSurname: userSurname,

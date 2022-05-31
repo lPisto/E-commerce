@@ -26,9 +26,6 @@
                     <a href="/"><span class="navbar-brand">Market</a> 
                 </div>
                 <div class="collapse navbar-collapse" id="mynavbar">
-                    <ul class="nav navbar-nav navbar-right">
-                        <li><a href="login"><span class="glyphicon glyphicon-log-in"> Login</span></a></li>
-                    </ul>
                 </div>
             </div>
         </nav>
@@ -79,31 +76,42 @@
                                     <div class="form-group">
                                         <b>Country</b>
                                         <input type="text" id="shipmentCountry" class="form-control shipmentInput" placeholder="<%= userCountry %>" name="country">
+                                        <i class="formulario__validacion-pass fas"></i>
+                                        <p class="formInputError"></p>
                                     </div>
                                 </div>
                                 <div id="cityGroup">
                                     <div class="form-group">
                                         <b>City</b>
                                         <input type="text" id="shipmentCity" class="form-control shipmentInput" placeholder="<%= userCity %>" name="city">
+                                        <i class="formulario__validacion-pass fas"></i>
+                                        <p class="formInputError"></p>
                                     </div>
                                 </div>
-                                <div id="streetGroup">
-                                    <div class="form-group">
+                                <div id="fullStreetGroup">
+                                    <div id="streetGroup">
+                                        <div class="form-group">
                                         <b>Street</b>
                                         <input type="text" id="shipmentStreet" class="form-control shipmentInput" placeholder="<%= userStreet %>" name="street">
+                                        <i class="formulario__validacion-pass fas"></i>
+                                        <p class="formInputError"></p>
                                     </div>
+                                    </div>
+                                    
                                     <div class="row">
-                                        <div class="streetNumberGroup">
-                                            <div class="col-xs-6">
+                                        <div id="streetNumberGroup">
+                                            <div class="col-xs-6 form-group">
                                             <b>Number</b>
                                             <input type="text" id="shipmentStreetNumber" class="form-control shipmentInput" placeholder="<%= userNumber %>" name="streetNumber">
-                                            <i class="formulario__validacion-info fas"></i>
+                                            <i class="formulario__validacion-mid fas"></i>
+                                            <p class="formInputError"></p>
                                             </div>
                                         </div>
                                         
                                         <div class="col-xs-6">
                                             <b>Flat (optional)</b>
                                             <input type="text" id="shipmentFlat" class="form-control shipmentInput" placeholder="<%= userFlat %>" name="flat">
+                                            <p class="formInputError"></p>
                                         </div>
                                         
                                     </div>
@@ -112,6 +120,7 @@
                                     <div class="form-group">
                                         <b>Additional indications (optional)</b>
                                         <input id="shipmentDescription" type="text" class="form-control shipmentInput" placeholder="Description" name="description">
+                                        <p class="formInputError"></p>
                                     </div>
                                 </div>
                             </div>
