@@ -5,6 +5,7 @@ const mysql = require("mysql");
 const myConnection = require("express-myconnection");
 const session = require("express-session");
 const bodyParser = require("body-parser");
+require('newrelic');
 
 // initialization
 const app = express();
