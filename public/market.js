@@ -42,11 +42,11 @@ function addItemToShoppingCart(itemTitle, itemPrice, itemImage) {
   let newTransactionRow = shoppingCartItemsContainer.insertRow(1);
 
   let newTypeCell = newTransactionRow.insertCell(0);
-  newTypeCell.innerHTML = `<img src=${itemImage} class="img-responsive"> 
-  <b class="itemTitle">${itemTitle}</b> `;
+  newTypeCell.innerHTML = `<img src=${itemImage} class="img-responsive itemImg"> 
+  <b class="itemTitle" id="itemTitle" name="title">${itemTitle}</b> `;
 
   newTypeCell = newTransactionRow.insertCell(1);
-  newTypeCell.innerHTML = `<span class="cart-item" id="cart-price">${itemPrice}</span>`;
+  newTypeCell.innerHTML = `<span class="cart-item itemPrice" id="cart-price">${itemPrice}</span>`;
 
   newTypeCell = newTransactionRow.insertCell(2);
   newTypeCell.innerHTML = `<div class="shopping-cart-quantity d-flex justify-content-between align-items-center border-bottom pb-2 pt-3">
@@ -67,7 +67,9 @@ function addItemToShoppingCart(itemTitle, itemPrice, itemImage) {
   res = res + price;
   cartTotal.innerHTML = `$${res}`;
 
-  newTransactionRow.querySelector(".btn-delete").addEventListener("click", () => {
+  newTransactionRow
+    .querySelector(".btn-delete")
+    .addEventListener("click", () => {
       const quantityElement = newTransactionRow.querySelector("#quantity");
       const quantity = Number(quantityElement.value);
 
@@ -82,7 +84,9 @@ function addItemToShoppingCart(itemTitle, itemPrice, itemImage) {
       padre.removeChild(newTransactionRow);
     });
 
-  newTransactionRow.querySelector(".shoppingCartItemQuantity").addEventListener("click", (event) => {
+  newTransactionRow
+    .querySelector(".shoppingCartItemQuantity")
+    .addEventListener("click", (event) => {
       const quantityInput = event.target;
       if (quantityInput.value <= 0) {
         quantityInput.value = 1;
@@ -116,7 +120,7 @@ function addItemToShoppingCart(itemTitle, itemPrice, itemImage) {
 
     padre = newTransactionRow.parentNode;
     padre.removeChild(newTransactionRow);
-    
+
     cartTotal.innerHTML = `$${total}`;
   });
 }
@@ -132,6 +136,32 @@ function deleteItems(totalDeletePrice) {
 // empty cart button
 document.getElementById("totalTrash").addEventListener("click", (event) => {
   let total = 0;
-
   cartTotal.innerHTML = `$${total}`;
 });
+
+// send products to backend
+const purchase = () => {
+  const itemTitle = document.getElementsByClassName("itemTitle");
+  const itemPrice = document.getElementsByClassName("itemPrice");
+  const itemQuantity = document.getElementsByClassName(
+    "shoppingCartItemQuantity"
+  );
+
+  for (i = 0; i < itemTitle.length; i++) {
+    let title = itemTitle[i].textContent;
+    let price = itemPrice[i].textContent.replace("$", "");
+    let quantity = itemQuantity[i].value;
+
+    fetch("http://localhost:4000/shipment", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        "name": title,
+        "price": price,
+        "quantity": quantity,
+      }),
+    });
+  }
+};

@@ -4,6 +4,11 @@ const mercadopago = require("mercadopago");
 
 // Users
 
+// Products
+controller.products = (req, res) => {
+  res.render("products")
+}
+
 // Payment
 mercadopago.configure({
     access_token: "TEST-4244969390240596-052801-6fd8c5a2f40fe10f16c4f30bccd50766-564636510",
@@ -68,7 +73,6 @@ controller.purchased = (req, res) => {
 
   // Proceed to checkout
   let preference = {
-    // NOTA: modificar items con los productos
     items: [
       {
         title: "Mi producto",
@@ -86,7 +90,6 @@ controller.purchased = (req, res) => {
   .then(function (response) {
     if (req.session.loggedIn == true) {
       res.redirect(response.body.init_point)
-      // console.log(data)
 
       // Payer information
       response.body.payer.email = req.session.email
@@ -114,7 +117,6 @@ controller.purchased = (req, res) => {
         totalAmount = totalAmount + (unitPrice * quantity)
       }
       response.body.total_amount = totalAmount;
-      // console.log(response.body)
     } else {
       res.redirect("/login")
     }
@@ -126,7 +128,6 @@ controller.purchased = (req, res) => {
 
 // Shipment
 controller.shipment = (req, res) => {
-  // console.log(req.session)
   const userName = req.session.name;
   const userSurname = req.session.surname;
   const userEmail = req.session.email;
@@ -166,6 +167,12 @@ controller.shipment = (req, res) => {
   } else {
     res.redirect("login")
   }
+
+  // product information
+    req.session.itemName = req.body.name
+    req.session.itemPrice = req.body.price 
+    req.session.itemQuantity = req.body.quantity
+  console.log(req.session)
 }
 
 // Admin
@@ -187,7 +194,7 @@ controller.save = (req, res) => {
   req.getConnection((err, conn) => {
     conn.query("INSERT INTO products SET ?", [data], (err, result) => {
       if (err) {
-        console.log(err);
+        (err);
       } else {
         res.redirect("adminProducts");
       }

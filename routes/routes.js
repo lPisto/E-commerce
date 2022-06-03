@@ -8,9 +8,7 @@ const jwt = require("jsonwebtoken");
 
 router.get("/", loginController.index);
 
-router.get("/products", (req, res) => {
-  res.render("products");
-});
+router.get("/products", productsController.products);
 
 router.get("/login", loginController.login);
 
