@@ -40,6 +40,8 @@ router.get("/shipment", (req, res) => {
 
 router.post("/shipment", productsController.shipment)
 
+router.post("/details", productsController.details)
+
 // Admin routes
 router.get("/success", loginController.verifyToken, loginController.adminRoute);
 

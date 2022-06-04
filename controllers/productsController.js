@@ -1,130 +1,148 @@
 const controller = {};
-const e = require( "connect-flash" );
+const e = require("connect-flash");
 const mercadopago = require("mercadopago");
+
+let preference = {
+  items: [],
+  back_urls: {
+    success: "localhost:4000/",
+  },
+  auto_return: "approved",
+};
 
 // Users
 
 // Products
 controller.products = (req, res) => {
-  res.render("products")
-}
+  res.render("products");
+};
 
 // Payment
 mercadopago.configure({
-    access_token: "TEST-4244969390240596-052801-6fd8c5a2f40fe10f16c4f30bccd50766-564636510",
+  access_token:
+    "TEST-4244969390240596-052801-6fd8c5a2f40fe10f16c4f30bccd50766-564636510",
 });
 
 controller.purchased = (req, res) => {
   // Setting user shipment information
   const data = req.body;
 
-  const email = req.session.email
-  const country = data.country 
-  const city = data.city 
-  const street = data.street 
-  const streetNumber = data.streetNumber 
-  const flat = data.flat 
-  const description = data.description
+  const email = req.session.email;
+  const country = data.country;
+  const city = data.city;
+  const street = data.street;
+  const streetNumber = data.streetNumber;
+  const flat = data.flat;
+  const description = data.description;
 
-  if(data.country !== ''){
+  if (data.country !== "") {
     req.getConnection((err, conn) => {
-      conn.query(
-        "UPDATE users SET country = ? WHERE email = ?;", 
-        [country, email]
-      )
-    })
+      conn.query("UPDATE users SET country = ? WHERE email = ?;", [
+        country,
+        email,
+      ]);
+    });
   }
-    
-  if(data.city !== '') {
+
+  if (data.city !== "") {
     req.getConnection((err, conn) => {
-      conn.query(
-        "UPDATE users SET city = ? WHERE email = ?;", 
-        [city, email]
-      )
-    })
+      conn.query("UPDATE users SET city = ? WHERE email = ?;", [city, email]);
+    });
   }
-  
-  if(data.street !== '') {
+
+  if (data.street !== "") {
     req.getConnection((err, conn) => {
-      conn.query(
-        "UPDATE users SET street = ? WHERE email = ?;", 
-        [street, email]
-      )
-    })
+      conn.query("UPDATE users SET street = ? WHERE email = ?;", [
+        street,
+        email,
+      ]);
+    });
   }
-  
-  if(data.streetNumber !== '') {
+
+  if (data.streetNumber !== "") {
     req.getConnection((err, conn) => {
-      conn.query(
-        "UPDATE users SET streetNumber = ? WHERE email = ?;", 
-        [streetNumber, email]
-      )
-    })
+      conn.query("UPDATE users SET streetNumber = ? WHERE email = ?;", [
+        streetNumber,
+        email,
+      ]);
+    });
   }
-  
-  if(data.flat !== '') {
+
+  if (data.flat !== "") {
     req.getConnection((err, conn) => {
-      conn.query(
-        "UPDATE users SET flat = ? WHERE email = ?;", 
-        [flat, email]
-      )
-    })
+      conn.query("UPDATE users SET flat = ? WHERE email = ?;", [flat, email]);
+    });
   }
 
   // Proceed to checkout
-  let preference = {
-    items: [
-      {
-        title: "Mi producto",
-        unit_price: 100,
-        quantity: 1,
-      },
-    ],
-    "back_urls": {
-      "success": "localhost:4000/"
-    },
-    "auto_return": "approved",
-  };
+  mercadopago.preferences
+    .create(preference)
+    .then(function (response) {
+      if (req.session.loggedIn == true) {
+        res.redirect(response.body.init_point);
 
-  mercadopago.preferences.create(preference)
-  .then(function (response) {
-    if (req.session.loggedIn == true) {
-      res.redirect(response.body.init_point)
+        // Payer information
+        response.body.payer.email = req.session.email;
+        response.body.payer.name = req.session.name;
+        response.body.payer.surname = req.session.surname;
+        response.body.payer.phone.number = req.session.phone;
+        response.body.payer.address.country = req.session.country;
+        response.body.payer.address.city = req.session.city;
+        response.body.payer.address.street_name = req.session.street;
+        response.body.payer.address.street_number = req.session.streetNumber;
+        response.body.payer.address.flat = req.session.flat;
 
-      // Payer information
-      response.body.payer.email = req.session.email
-      response.body.payer.name = req.session.name
-      response.body.payer.surname = req.session.surname
-      response.body.payer.phone.number = req.session.phone
-      response.body.payer.address.country = req.session.country
-      response.body.payer.address.city = req.session.city
-      response.body.payer.address.street_name = req.session.street
-      response.body.payer.address.street_number = req.session.streetNumber
-      response.body.payer.address.flat = req.session.flat
+        // Shipment information
+        response.body.shipments.receiver_address.street_name =
+          req.session.street;
+        response.body.shipments.receiver_address.street_number =
+          req.session.streetNumber;
+        response.body.shipments.receiver_address.apartment = req.session.flat;
+        response.body.shipments.receiver_address.city_name = req.session.city;
+        response.body.shipments.receiver_address.country_name =
+          req.session.country;
 
-      // Shipment information
-      response.body.shipments.receiver_address.street_name = req.session.street
-      response.body.shipments.receiver_address.street_number = req.session.streetNumber
-      response.body.shipments.receiver_address.apartment = req.session.flat
-      response.body.shipments.receiver_address.city_name = req.session.city
-      response.body.shipments.receiver_address.country_name = req.session.country
+        // Product information
+        let totalAmount = 0;
+        for (let i = 0; i < response.body.items.length; i++) {
+          const unitPrice = response.body.items[i].unit_price;
+          const quantity = response.body.items[i].quantity;
+          totalAmount = totalAmount + unitPrice * quantity;
+        }
+        response.body.total_amount = totalAmount;
+        // console.log(response.body)
 
-      // Product information
-      let totalAmount = 0
-      for (let i = 0; i < response.body.items.length; i++) {
-        const unitPrice = response.body.items[i].unit_price
-        const quantity = response.body.items[i].quantity
-        totalAmount = totalAmount + (unitPrice * quantity)
+        // Update products DB
+        for (let i = 0; i < response.body.items.length; i++) {
+          req.getConnection((err, conn) => {
+            conn.query(
+              "SELECT * FROM products WHERE id = ?",
+              [response.body.items[i].id],
+              (err, productData) => {
+                for (let i = 0; i < productData.length; i++) {
+                  const stockQuantity = Number(productData[i].quantity);
+                  for (let i = 0; i < response.body.items.length; i++) {
+                    const itemQuantity = response.body.items[i].quantity;
+                    newStockQuantity = stockQuantity - itemQuantity;
+
+                    conn.query(
+                      "UPDATE products SET quantity = ? WHERE id = ?;",
+                      [newStockQuantity, response.body.items[i].id]
+                    );
+                  }
+                }
+              }
+            );
+          });
+        }
+      } else {
+        res.redirect("/login");
       }
-      response.body.total_amount = totalAmount;
-    } else {
-      res.redirect("/login")
-    }
-  })
-  .catch(function (error) {
-    console.log(error);
-  });
-}
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+};
 
 // Shipment
 controller.shipment = (req, res) => {
@@ -139,7 +157,14 @@ controller.shipment = (req, res) => {
   const userFlat = req.session.flat;
 
   if (req.session.loggedIn == true) {
-    if(userCountry && userCity && userStreet && userNumber && userFlat !== undefined || userCountry && userCity && userStreet && userNumber && userFlat !== '') {
+    if (
+      (userCountry &&
+        userCity &&
+        userStreet &&
+        userNumber &&
+        userFlat !== undefined) ||
+      (userCountry && userCity && userStreet && userNumber && userFlat !== "")
+    ) {
       res.render("shipment", {
         userName: userName,
         userSurname: userSurname,
@@ -149,8 +174,8 @@ controller.shipment = (req, res) => {
         userCity: userCity,
         userStreet: userStreet,
         userNumber: userNumber,
-        userFlat: userFlat
-      })
+        userFlat: userFlat,
+      });
     } else {
       res.render("shipment", {
         userName: userName,
@@ -161,19 +186,32 @@ controller.shipment = (req, res) => {
         userCity: "City",
         userStreet: "Street",
         userNumber: "Number",
-        userFlat: "Flat"
-        })
+        userFlat: "Flat",
+      });
     }
   } else {
-    res.redirect("login")
+    res.redirect("login");
   }
+};
 
-  // product information
-    req.session.itemName = req.body.name
-    req.session.itemPrice = req.body.price 
-    req.session.itemQuantity = req.body.quantity
-  console.log(req.session)
-}
+controller.details = (req, res) => {
+  req.getConnection((err, conn) => {
+    conn.query(
+      "SELECT * FROM products WHERE name = ?",
+      [req.body.name],
+      (err, productData) => {
+        for (let i = 0; i < productData.length; i++) {
+          preference.items.push({
+            id: productData[i].id,
+            title: req.body.name,
+            unit_price: Number(req.body.price),
+            quantity: Number(req.body.quantity),
+          });
+        }
+      }
+    );
+  });
+};
 
 // Admin
 controller.list = (req, res) => {
@@ -194,7 +232,7 @@ controller.save = (req, res) => {
   req.getConnection((err, conn) => {
     conn.query("INSERT INTO products SET ?", [data], (err, result) => {
       if (err) {
-        (err);
+        err;
       } else {
         res.redirect("adminProducts");
       }
@@ -205,9 +243,9 @@ controller.save = (req, res) => {
 controller.edit = (req, res) => {
   const { id } = req.params;
   req.getConnection((err, conn) => {
-    conn.query('SELECT * FROM products WHERE id = ?', [id], (err, result) => {
-      res.render('adminProductsEdit', {
-        data: result[0]
+    conn.query("SELECT * FROM products WHERE id = ?", [id], (err, result) => {
+      res.render("adminProductsEdit", {
+        data: result[0],
       });
     });
   });
@@ -217,9 +255,13 @@ controller.update = (req, res) => {
   const { id } = req.params;
   const newProduct = req.body;
   req.getConnection((err, conn) => {
-    conn.query("UPDATE products set ? WHERE id = ?", [newProduct, id], (err, result) => {
-      res.redirect("../adminProducts");
-    });
+    conn.query(
+      "UPDATE products set ? WHERE id = ?",
+      [newProduct, id],
+      (err, result) => {
+        res.redirect("../adminProducts");
+      }
+    );
   });
 };
 

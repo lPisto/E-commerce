@@ -152,7 +152,7 @@ const purchase = () => {
     let price = itemPrice[i].textContent.replace("$", "");
     let quantity = itemQuantity[i].value;
 
-    fetch("http://localhost:4000/shipment", {
+    fetch("http://localhost:4000/details", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
