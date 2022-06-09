@@ -14,6 +14,12 @@ const flatPh = inputs[8].placeholder;
 const description = inputs[9]
 const descriptionPh = inputs[9].placeholder;
 
+var disabled = document.getElementById("shipmentName").disabled;
+document.getElementById("shipmentName").disabled = true;
+document.getElementById("shipmentSurname").disabled = true;
+document.getElementById("shipmentEmail").disabled = true;
+document.getElementById("shipmentPhone").disabled = true;
+
 const expresiones = {
     email: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
     phone: /^\d{7,15}$/,
@@ -66,6 +72,29 @@ const validateForm = (e) => {
             submitBtn.disabled = false;
         } else {
             submitBtn.disabled = true;
+        }
+    } else {
+        switch (e.target.name) {
+            case 'country':
+                validateField(expresiones.country, e.target, 'country');
+            break;
+            case 'city':
+                validateField(expresiones.city, e.target, 'city');
+            break;
+            case 'street':
+                validateField(expresiones.street, e.target, 'street');
+            break;
+            case 'streetNumber':
+                validateField(expresiones.streetNumber, e.target, 'streetNumber');
+            break;
+        }
+        if (fields.country && fields.city && fields.street && fields.streetNumber == true) {
+            submitBtn.disabled = false;
+        } else {
+            submitBtn.disabled = true;
+            if (country.value.length == 0 && city.value.length == 0 && street.value.length == 0 && streetNumber.value.length == 0) {
+                submitBtn.disabled = false;
+            }
         }
     }
 }

@@ -26,6 +26,14 @@ mercadopago.configure({
 controller.purchased = (req, res) => {
   // Setting user shipment information
   const data = req.body;
+  if (data.country || data.city || data.street || data.streetNumber || data.flat || data.description !== '') {
+    req.session.country = data.country;
+    req.session.city = data.city;
+    req.session.street = data.street;
+    req.session.streetNumber = data.streetNumber;
+    req.session.flat = data.flat;
+    req.session.description = data.description;
+  }
 
   const email = req.session.email;
   const country = data.country;
@@ -33,7 +41,6 @@ controller.purchased = (req, res) => {
   const street = data.street;
   const streetNumber = data.streetNumber;
   const flat = data.flat;
-  const description = data.description;
 
   if (data.country !== "") {
     req.getConnection((err, conn) => {
@@ -91,6 +98,7 @@ controller.purchased = (req, res) => {
         response.body.payer.address.street_name = req.session.street;
         response.body.payer.address.street_number = req.session.streetNumber;
         response.body.payer.address.flat = req.session.flat;
+        response.body.payer.address.description = req.session.description;
 
         // Shipment information
         response.body.shipments.receiver_address.street_name =
@@ -110,7 +118,6 @@ controller.purchased = (req, res) => {
           totalAmount = totalAmount + unitPrice * quantity;
         }
         response.body.total_amount = totalAmount;
-        // console.log(response.body)
 
         // Update products DB
         for (let i = 0; i < response.body.items.length; i++) {
@@ -135,6 +142,43 @@ controller.purchased = (req, res) => {
             );
           });
         }
+
+        // Updating the purchase database
+        console.log(response.body) 
+        var data = response.body       
+
+        req.getConnection((err, conn) => {
+          // Details
+          conn.query("INSERT INTO details SET ?", [data.payer.email], (err, result) => {
+            if (err) {
+              err;
+            } 
+          });
+
+          // Shipment
+          conn.query("INSERT INTO shipment SET ?", [data.payer.address.country, data.payer.address.city, data.payer.address.street_name, data.payer.address.street_number, data.payer.address.flat, data.payer.address.description], (err, result) => {
+            if (err) {
+              err;
+            } 
+          });
+
+          // Payment
+          conn.query("INSERT INTO payment SET ?", [data.id, data.client_id, data.collector_id, data.date_created, data.total_amount], (err, result) => {
+            if (err) {
+              err;
+            } 
+          });
+
+          // Sold Products
+          for (let i = 0; i < data.items.length; i++) {
+            conn.query("INSERT INTO soldProducts SET ?", [data.items[i].id, data.items[i].title, data.items[i].unit_price, data.items[i].quantity], (err, result) => {
+              if (err) {
+                err;
+              } 
+            });
+          }
+        });
+
       } else {
         res.redirect("/login");
       }

@@ -211,6 +211,9 @@ const updateAccount = (req, res) => {
     req.getConnection((err, conn) => {
       conn.query("UPDATE users SET email = ? WHERE email = ?;", 
       [emailForm, email]
+      ),
+      conn.query("UPDATE details SET email = ? WHERE userEmail = ?;", 
+      [emailForm, email]
       )
     })
     res.redirect("/")
