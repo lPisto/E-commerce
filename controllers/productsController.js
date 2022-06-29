@@ -15,6 +15,7 @@ let preference = {
 // Products
 controller.products = (req, res) => {
   res.render("products");
+  preference.items = []
 };
 
 // Payment
@@ -148,37 +149,66 @@ controller.purchased = (req, res) => {
         var data = response.body       
 
         req.getConnection((err, conn) => {
-          // Details
-          conn.query("INSERT INTO details SET ?", [data.payer.email], (err, result) => {
-            if (err) {
-              err;
-            } 
-          });
-
           // Shipment
-          conn.query("INSERT INTO shipment SET ?", [data.payer.address.country, data.payer.address.city, data.payer.address.street_name, data.payer.address.street_number, data.payer.address.flat, data.payer.address.description], (err, result) => {
-            if (err) {
-              err;
-            } 
-          });
+          conn.query(
+            "INSERT INTO shipment (country, city, street, streetNumber, flat, additionalInformation, userEmail) VALUES ('" + data.payer.address.country + "','" + data.payer.address.city + "','" + data.payer.address.street_name + "','" + data.payer.address.street_number + "','" + data.payer.address.flat + "','" + data.payer.address.description + "','" + data.payer.email + "')"
+          );
 
           // Payment
-          conn.query("INSERT INTO payment SET ?", [data.id, data.client_id, data.collector_id, data.date_created, data.total_amount], (err, result) => {
-            if (err) {
-              err;
-            } 
-          });
+          conn.query(
+            "INSERT INTO payment (paymentId, client_id, collectorId, dateCreated, totalAmount, userEmail) VALUES ('" + data.id + "','" + data.client_id + "','" + data.collector_id + "','" + data.date_created + "','" + data.total_amount + "','" + data.payer.email + "')"
+          );
 
           // Sold Products
-          for (let i = 0; i < data.items.length; i++) {
-            conn.query("INSERT INTO soldProducts SET ?", [data.items[i].id, data.items[i].title, data.items[i].unit_price, data.items[i].quantity], (err, result) => {
-              if (err) {
-                err;
-              } 
-            });
-          }
-        });
+          conn.query(
+            "SELECT id FROM soldProducts", (err, soldProducts) => {
+              for (let i = 0; i < data.items.length; i++) {
+                conn.query(
+                  "INSERT INTO soldProducts (id, productId, name, price, quantity, userEmail) VALUES ('" + (soldProducts[soldProducts.length - 1].id + 1) + "','" + data.items[i].id + "','" + data.items[i].title + "','" + data.items[i].unit_price + "','" + data.items[i].quantity + "','" + data.payer.email + "')"
+                )
+              }
+              data.soldProducts = soldProducts[soldProducts.length - 1].id + 1
+            }
+          ),
 
+          // Details
+          conn.query(
+            "INSERT INTO details (userEmail) VALUES ('" + data.payer.email + "')"
+          ),
+          conn.query(
+            "SELECT id FROM details WHERE userEmail = ?", [data.payer.email], (err, detailsData) => {
+              response.body.detailsId = detailsData[detailsData.length-1].id
+            }
+          ),
+          conn.query(
+            "SELECT id FROM shipment WHERE userEmail = ?",
+            [data.payer.email], 
+            (err, shipmentData) => {              
+              conn.query(
+                "UPDATE details SET shipmentId = ? where id = ?", [shipmentData[shipmentData.length - 1].id, data.detailsId]
+              )
+            }
+          ),
+          conn.query(
+            "SELECT id FROM soldProducts WHERE userEmail = ?",
+            [data.payer.email], 
+            (err, soldProductsData) => {              
+              conn.query(
+                "UPDATE details SET soldProductsId = ? where id = ?", [data.soldProducts, data.detailsId]
+              )
+            }
+          ),
+          conn.query(
+            "SELECT id FROM payment WHERE userEmail = ?",
+            [data.payer.email], 
+            (err, paymentData) => {
+              conn.query(
+                "UPDATE details SET paymentId = ? where id = ?", [paymentData[paymentData.length - 1].id, data.detailsId]
+              )
+            }
+          )
+        });
+        
       } else {
         res.redirect("/login");
       }
