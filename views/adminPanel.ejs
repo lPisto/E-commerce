@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <link rel="icon" type="image/png" href="img/logo2.png">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src="https://kit.fontawesome.com/d520c148c3.js" crossorigin="anonymous"></script>
+        <title>Market</title>
+        <link href="/css/style.css" rel="stylesheet">
+    </head>
+    
+
+<body>
+    <%- include("partials/header") %>
+        <main>
+            <div class="container">
+                <div class="row row_style">
+                    <div class="col-lg-6 col-lg-offset-3">
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>email</th>
+                                    <th>role</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <form action="/userRole" method="POST" id="form">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <div id="emailGroup">
+                                                <div class="form-group">
+                                                    <input type="email" class="form-control formInput" placeholder="Email" name="email">
+                                                    <i class="formulario__validacion-estado fas"></i>
+                                                </div>
+                                                <p class="formInputError">Please insert a valid email</p>
+                                                <div id="<%= emailError %>">
+                                                    <p id="userExists"><i class="fas fa-exclamation-triangle"></i> <b>Please insert a valid email!</b></p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div style="position:relative;width:180px;height:25px;border:0;padding:0;margin:0;" class="form-group">
+                                                <select style="position:absolute;top:0px;left:0px;width:215px; height:35px;line-height:20px;margin:0;padding:0;" class="form-control formInput" id="roleInput" name="role"
+                                                        onchange="document.getElementById('displayValue').value=this.options[this.selectedIndex].text; document.getElementById('idValue').value=this.options[this.selectedIndex].value;">
+                                                  <option></option>
+                                                  <option value="user">User</option>
+                                                  <option value="admin">Admin</option>
+                                                </select id="roleInput">
+                                              </div>
+                                        </td>
+                                        <td>
+                                            <button id="saveBtn" class="btn btn-primary">Save</button> 
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </form>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <%- include("partials/footer") %>
+
+        <script src="./adminPanel.js"></script>
+</body>
+
+</html>

@@ -294,9 +294,13 @@ controller.list = (req, res) => {
       if (err) {
         res.json(err);
       }
-      res.render("adminProducts", {
-        data: products,
-      });
+      if (req.session.role == "admin") {
+        res.render("adminProducts", {
+          data: products,
+        });
+      } else {
+        res.redirect("/")
+      }
     });
   });
 };

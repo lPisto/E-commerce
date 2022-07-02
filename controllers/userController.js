@@ -68,6 +68,7 @@ const auth = (req, res) => {
                   })
                 })
                 
+                req.session.role = element.role;
                 req.session.loggedIn = true;
                 req.session.name = element.name;
                 req.session.surname = element.surname;
@@ -154,13 +155,17 @@ const storeUser = (req, res) => {
 };
 
 const settings = (req, res) => {
-  res.render("settings", {
-    changePasswordError: "displayNone",
-    userName: req.session.name,
-    userSurname: req.session.surname,
-    userEmail: req.session.email,
-    userPhone: req.session.phone
-  });
+  if (req.session.role == "user") {
+    res.render("settings", {
+      changePasswordError: "displayNone",
+      userName: req.session.name,
+      userSurname: req.session.surname,
+      userEmail: req.session.email,
+      userPhone: req.session.phone
+    });
+  } else (
+    res.redirect("/")
+  )
 }
 
 const updateAccount = (req, res) => {
@@ -177,25 +182,24 @@ const updateAccount = (req, res) => {
 
     if (oldPasswordForm.length > 0) {
       bcrypt.compare(oldPasswordForm, oldPasswordSession, (err, isMatch) => {
-      if(isMatch) {
-        req.getConnection((err, conn) => {
-          conn.query("UPDATE users SET password = ? WHERE email = ?;", 
-          [newPassword, email]
-          )
-        })
-        res.redirect("/")
-      } else {
-        res.render("settings", {
-          changePasswordError: "changePasswordError",
-          settingsName: req.session.name,
-          settingsSurname: req.session.surname,
-          settingsEmail: req.session.email,
-          settingsPhone: req.session.phone
-        });
-      }
-    })
+        if(isMatch) {
+          req.getConnection((err, conn) => {
+            conn.query("UPDATE users SET password = ? WHERE email = ?;", 
+            [newPassword, email]
+            )
+          })
+          res.redirect("/")
+        } else {
+          res.render("settings", {
+            changePasswordError: "changePasswordError",
+            settingsName: req.session.name,
+            settingsSurname: req.session.surname,
+            settingsEmail: req.session.email,
+            settingsPhone: req.session.phone
+          });
+        }
+      })
     }
-    
   })
 
   if(phone.length > 0) {
@@ -220,6 +224,39 @@ const updateAccount = (req, res) => {
   }
 }
 
+const adminPanel = (req, res) => {
+  // if (req.session.role == "admin") {
+    res.render("adminPanel", {
+      emailError: "displayNone"
+    });
+  // } else {
+  //   res.redirect("/")
+  // }
+}
+
+const modifyUserRole = (req, res) => {
+  const data = req.body;
+  const email = data.email;
+  const role = data.role;
+
+  req.getConnection((err, conn) => {
+    conn.query(
+      "SELECT email FROM users WHERE email = ?", [email], (err, userEmail) => {
+        if (userEmail == "") {
+          res.render("adminPanel", {
+            emailError: ""
+          });
+        } else {
+          conn.query(
+          "UPDATE users SET role = ? WHERE email = ?;", [role, email]
+          ),
+          res.redirect("/")
+        }
+      }
+    )
+  })
+}
+
 
 module.exports = {
   login,
@@ -229,6 +266,8 @@ module.exports = {
   auth,
   index,
   updateAccount,
+  adminPanel,
+  modifyUserRole,
   settings,
   adminRoute,
   verifyToken
