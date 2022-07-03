@@ -20,13 +20,13 @@ router.post("/signUp", userController.storeUser);
 
 router.get("/logOut", userController.logOut);
 
-router.get("/cart", (req, res) => {
-  res.render("cart");
-});
+router.get("/forgotPassword", userController.forgotPassword);
 
-router.get("/success", (req, res) => {
-  res.render("success");
-});
+router.post("/forgotPassword", userController.forgotPasswordEmail);
+
+router.get("/successForgotPassword", (req, res) => {
+  res.render('successForgotPassword');
+})
 
 router.get("/settings", userController.settings);
 
