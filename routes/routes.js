@@ -4,7 +4,7 @@ const userController = require('../controllers/userController')
 const productsController = require('../controllers/productsController');
 const jwt = require("jsonwebtoken");
 
-// Users 
+// User Routes
 
 router.get("/", userController.index);
 
@@ -27,6 +27,10 @@ router.post("/forgotPassword", userController.forgotPasswordEmail);
 router.get("/successForgotPassword", (req, res) => {
   res.render('successForgotPassword');
 })
+
+router.get("/resetPassword/:token", userController.resetPassword);
+
+router.post("/changePassword/:token", userController.changePassword);
 
 router.get("/settings", userController.settings);
 

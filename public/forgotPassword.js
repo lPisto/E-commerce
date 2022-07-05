@@ -7,8 +7,7 @@ const expresiones = {
 };
 
 fields = {
-    email: false,
-    role: false
+    email: false
 }
 
 submitBtn.disabled = true;
@@ -19,14 +18,7 @@ const validateForm = (e) => {
             validateField(expresiones.email, e.target, 'email');
         break;
     }
-    if (e.target.name == "role") {
-        if (e.target.value != "") {
-            fields.role = true
-        } else {
-            fields.role = false
-        }
-    }
-    if (fields.email && fields.role == true) {
+    if (fields.email) {
         submitBtn.disabled = false;
     } else {
         submitBtn.disabled = true;

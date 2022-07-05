@@ -257,7 +257,7 @@ const forgotPasswordEmail = (req, res) => {
 
           conn.query("UPDATE users SET token = ? WHERE email = ?", [token, req.body.email]);
 
-          resetUrl = "http://localhost:3000/resetPassword/" + token;
+          resetUrl = "http://localhost:4000/resetPassword/" + token;
 
           await mailer.transporter.sendMail({
             from: '"Market" <lsoftware.development.testing@gmail.com>',
@@ -297,7 +297,7 @@ const forgotPasswordEmail = (req, res) => {
             `,
           });
 
-          const job = schedule.scheduleJob("* * */1 * *", () => {
+          const job = schedule.scheduleJob("* * */60 *", () => {
             conn.query(
               "UPDATE users SET token = ? WHERE email = ?", [null, req.body.email]
             )
@@ -316,11 +316,59 @@ const forgotPasswordEmail = (req, res) => {
   });
 };
 
-//hacer validaciones visuales email forgotPassword
+const resetPassword = (req, res) => {
+  console.log(req.params)
+  req.getConnection((err, conn) => {
+    conn.query(
+      "SELECT * FROM users WHERE token = ?", [req.params.token], (err, userData) => {
+        if (userData.length > 0) {
+          res.render("resetPassword", {
+            token: req.params.token,
+            changePasswordError: "displayNone"
+          });
+        } else {
+          res.redirect("/login");
+        }
+      }
+    )
+  })
+};
 
-//ruta para cambiar contraseña de forgot password
-//get: si el token de la url coincide con el token de un usuario, entonces hacer render de resetPassword - si no, redirect a login
-//post: contraseña y confirmar contraseña. hacer verificacion de que ambas sean validas y que coincidan. si esta todo ok, cambiar contraseña y borrar token DB. redirect login.
+const changePassword = (req, res) => {
+  const data = req.body;
+  const password = data.password;
+  const token = req.params.token;
+
+  bcrypt.hash(password, 12).then((hash) => {
+    const newPassword = hash;
+
+    if (password.length > 0) {
+      req.getConnection((err, conn) => {
+        conn.query(
+          "SELECT * FROM users WHERE token = ?", [token], (err, userData) => {
+            if (userData.length > 0) {
+              conn.query(
+                "UPDATE users SET password = ? WHERE token = ?", [newPassword, token]
+              );
+              conn.query(
+                "UPDATE users SET token = ? WHERE token = ?", [null, token]
+              );
+              res.redirect("/login");
+            } else {
+              res.redirect("/login");
+            }
+          }
+        );
+      });
+    } else {
+      res.render("resetPassword", {
+        changePasswordError: "changePasswordError",
+      });
+    }
+  });
+}
+
+//hacer validaciones visuales email forgotPassword y resetPassword
 
 const adminPanel = (req, res) => {
   if (req.session.role == "admin") {
@@ -368,6 +416,8 @@ module.exports = {
   updateAccount,
   forgotPassword,
   forgotPasswordEmail,
+  resetPassword,
+  changePassword,
   adminPanel,
   modifyUserRole,
   settings,
