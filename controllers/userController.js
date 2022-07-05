@@ -317,7 +317,6 @@ const forgotPasswordEmail = (req, res) => {
 };
 
 const resetPassword = (req, res) => {
-  console.log(req.params)
   req.getConnection((err, conn) => {
     conn.query(
       "SELECT * FROM users WHERE token = ?", [req.params.token], (err, userData) => {

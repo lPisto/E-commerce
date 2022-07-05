@@ -5,7 +5,6 @@ const productsController = require('../controllers/productsController');
 const jwt = require("jsonwebtoken");
 
 // User Routes
-
 router.get("/", userController.index);
 
 router.get("/products", productsController.products);
@@ -57,5 +56,10 @@ router.post('/add', productsController.save);
 router.get('/delete/:id', productsController.delete);
 router.get('/update/:id', productsController.edit);
 router.post('/update/:id', productsController.update);
+
+// Status(404)
+router.get("/:404", (req, res) => {
+  res.redirect("/");
+})
 
 module.exports = router;
